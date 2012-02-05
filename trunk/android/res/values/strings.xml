@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- 登录界面 -->
+
+    <string name="login_name_lbl">用户名</string>
+    <string name="login_password_lbl">密码</string>
+    <string name="login_reg_cb">使用此用户名密码注册新用户</string>
+    <string name="login_remLogin_cb">记住用户名密码</string>
+    <string name="login_login_btn">登录</string>
+
+    <!-- 注册界面 -->
     <string name="hello">Hello World, TVTogeterActivity!</string>
-    <string name="app_name">TVTogeter</string>
+    <string name="app_name">17看电视</string>
 
 </resources>
