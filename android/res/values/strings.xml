@@ -6,7 +6,7 @@
     <string name="login_name_lbl">用户名</string>
     <string name="login_password_lbl">密码</string>
     <string name="login_reg_cb">使用此用户名密码注册新用户</string>
-    <string name="login_remLogin_cb">记住用户名密码</string>
+    <string name="login_keepLogin_cb">记住用户名密码</string>
     <string name="login_login_btn">登录</string>
 
     <!-- 注册界面 -->

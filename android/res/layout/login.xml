@@ -10,46 +10,50 @@
         android:layout_height="wrap_content"
         android:text="@string/login_name_lbl"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
     <EditText
         android:id="@+id/loginUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName" >
+        android:inputType="textPersonName"
+        android:singleLine="true" >
 
         <requestFocus />
     </EditText>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_password_lbl"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
     <EditText
         android:id="@+id/loginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName" >
+        android:inputType="textPassword"
+        android:singleLine="true" >
+
     </EditText>
 
     <CheckBox
-        android:id="@+id/checkBox1"
+        android:id="@+id/loginReg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login_reg_cb" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/loginKeepLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login_remLogin_cb" />
+        android:text="@string/login_keepLogin_cb" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login_login_btn" />
+
 
 </LinearLayout>
