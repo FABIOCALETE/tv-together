@@ -12,5 +12,8 @@
     <!-- 注册界面 -->
     <string name="hello">Hello World, TVTogeterActivity!</string>
     <string name="app_name">17看电视</string>
+    
+    <!-- 测试相关 -->
+	<string name="test_demo">测试页面</string>
 
 </resources>

@@ -34,14 +34,20 @@ public class TVTogeterActivity extends Activity {
 		loginBtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				final String msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isSelected(),
-						keepLogin.isSelected());
+				final String msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked(),
+						keepLogin.isChecked());
 				if (action == true) {
-					Intent intent = new Intent(TVTogeterActivity.this, TextDemoActivity.class);
+					Intent intent = new Intent(getApplicationContext(), TextDemoActivity.class);
 					Bundle bundle = new Bundle();
 					bundle.putString("demoMsg", msg);
 					intent.putExtras(bundle);
 					startActivity(intent);
+					// String phoneNum = "2323232323";// µç»°ºÅÂë
+					// Intent intent = new Intent();
+					// intent.setAction(Intent.ACTION_DIAL);
+					// intent.setData(Uri.parse("tel:" + phoneNum));
+					// startActivity(intent);
+
 				} else {
 					displayToast(msg);
 				}
