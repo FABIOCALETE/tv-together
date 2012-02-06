@@ -2,6 +2,8 @@ package com.snda.mzang.tvtogether.utils.ui;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.snda.mzang.tvtogether.utils.ThreadPoolUtil;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;

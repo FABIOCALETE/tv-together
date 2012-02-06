@@ -1,4 +1,4 @@
-package com.snda.mzang.tvtogether.utils.ui;
+package com.snda.mzang.tvtogether.utils;
 
 import java.nio.charset.Charset;
 

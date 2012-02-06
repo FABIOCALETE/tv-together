@@ -13,8 +13,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.snda.mzang.tvtogether.R;
-import com.snda.mzang.tvtogether.utils.ui.Constants;
-import com.snda.mzang.tvtogether.utils.ui.MD5Helper;
+import com.snda.mzang.tvtogether.utils.Constants;
+import com.snda.mzang.tvtogether.utils.JSONUtil;
+import com.snda.mzang.tvtogether.utils.UserSession;
 import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
 
 public class LoginActivity extends Activity {
@@ -46,8 +47,12 @@ public class LoginActivity extends Activity {
 				PopupTipsUtil.showWaitingDialog(LoginActivity.this, new Runnable() {
 
 					public void run() {
-						final String msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked());
-						PopupTipsUtil.displayToast(LoginActivity.this, msg);
+						final JSONObject msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked());
+						JSONObject ret = Constants.comm.sendMsg(msg);
+						String content = JSONUtil.getString(ret, "result");
+						// PopupTipsUtil.displayToast(LoginActivity.this,
+						// content);
+						Log.d(Constants.TAG, content);
 					}
 
 				}, "ÕýÔÚ×¢²áÖÐ...");
@@ -69,19 +74,18 @@ public class LoginActivity extends Activity {
 		});
 	}
 
-	public String constuctLoginMessage(String userName, String password, boolean regNewUser) {
+	public JSONObject constuctLoginMessage(String userName, String password, boolean regNewUser) {
 		JSONObject login = new JSONObject();
 
+		UserSession.setUserName(userName);
+		UserSession.setPassword(password);
 		try {
 			login.put("handler", "loginHandler");
-			login.put("userName", userName);
-			login.put("password", MD5Helper.getMD5(password));
 			login.put("regNewUser", regNewUser);
-			return login.toString();
+			return login;
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 }
