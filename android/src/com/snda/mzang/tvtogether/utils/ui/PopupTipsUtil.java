@@ -18,7 +18,7 @@ public class PopupTipsUtil {
 
 		final ProgressDialog waitingDialog = ProgressDialog.show(parent, "ÇëµÈ´ý...", msg, true);
 
-		ThreadPoolUtil.executeInThread(new Runnable() {
+		ThreadPoolUtil.execute(new Runnable() {
 
 			public void run() {
 				try {

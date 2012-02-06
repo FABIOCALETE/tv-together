@@ -1,9 +1,11 @@
 package com.snda.mzang.tvtogether.activities;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -11,11 +13,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.snda.mzang.tvtogether.R;
+import com.snda.mzang.tvtogether.utils.ui.Constants;
+import com.snda.mzang.tvtogether.utils.ui.MD5Helper;
 import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
 
 public class LoginActivity extends Activity {
-
-	private static boolean action = false;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -36,16 +38,16 @@ public class LoginActivity extends Activity {
 		loginBtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				final String msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked(), keepLogin.isChecked());
+				boolean keepLoginBoolean = keepLogin.isChecked();
+				if (keepLoginBoolean == true) {
+					Log.d(Constants.TAG, "Need to store user setting");
+				}
 
 				PopupTipsUtil.showWaitingDialog(LoginActivity.this, new Runnable() {
 
 					public void run() {
-						try {
-							Thread.sleep(3000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+						final String msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked());
+						PopupTipsUtil.displayToast(LoginActivity.this, msg);
 					}
 
 				}, "ÕýÔÚ×¢²áÖÐ...");
@@ -67,10 +69,19 @@ public class LoginActivity extends Activity {
 		});
 	}
 
-	public String constuctLoginMessage(String userName, String password, boolean regNewUser, boolean keepLogin) {
+	public String constuctLoginMessage(String userName, String password, boolean regNewUser) {
 		JSONObject login = new JSONObject();
-		StringBuilder content = new StringBuilder();
-		content.append(userName).append("; ").append(password).append("; ").append(regNewUser).append("; ").append(keepLogin);
-		return content.toString();
+
+		try {
+			login.put("handler", "loginHandler");
+			login.put("userName", userName);
+			login.put("password", MD5Helper.getMD5(password));
+			login.put("regNewUser", regNewUser);
+			return login.toString();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
