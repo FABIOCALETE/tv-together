@@ -4,8 +4,11 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.view.Gravity;
+import android.widget.Toast;
 
-public class WaitingDialogUtil {
+public class PopupTipsUtil {
 
 	public static void showWaitingDialog(final Activity parent, final Runnable runnable, String msg) {
 
@@ -29,6 +32,12 @@ public class WaitingDialogUtil {
 
 		});
 
+	}
+
+	public static void displayToast(Context context, String text) {
+		Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP, 0, 220);
+		toast.show();
 	}
 
 }

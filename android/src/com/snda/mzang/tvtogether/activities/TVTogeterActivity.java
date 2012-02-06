@@ -2,16 +2,14 @@ package com.snda.mzang.tvtogether.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.snda.mzang.tvtogether.R;
-import com.snda.mzang.tvtogether.utils.ui.WaitingDialogUtil;
+import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
 
 public class TVTogeterActivity extends Activity {
 
@@ -39,7 +37,7 @@ public class TVTogeterActivity extends Activity {
 				final String msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked(), keepLogin.isChecked());
 				if (action == true) {
 
-					WaitingDialogUtil.showWaitingDialog(TVTogeterActivity.this, new Runnable() {
+					PopupTipsUtil.showWaitingDialog(TVTogeterActivity.this, new Runnable() {
 
 						public void run() {
 							try {
@@ -63,7 +61,7 @@ public class TVTogeterActivity extends Activity {
 					// startActivity(intent);
 
 				} else {
-					displayToast(msg);
+					PopupTipsUtil.displayToast(TVTogeterActivity.this, msg);
 				}
 				action = !action;
 			}
@@ -77,9 +75,4 @@ public class TVTogeterActivity extends Activity {
 		return content.toString();
 	}
 
-	public void displayToast(String text) {
-		Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-		toast.setGravity(Gravity.TOP, 0, 220);
-		toast.show();
-	}
 }
