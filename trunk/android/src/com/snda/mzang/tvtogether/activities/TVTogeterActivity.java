@@ -1,11 +1,6 @@
 package com.snda.mzang.tvtogether.activities;
 
-import com.snda.mzang.tvtogether.R;
-import com.snda.mzang.tvtogether.R.id;
-import com.snda.mzang.tvtogether.R.layout;
-
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -14,6 +9,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.snda.mzang.tvtogether.R;
+import com.snda.mzang.tvtogether.utils.ui.WaitingDialogUtil;
 
 public class TVTogeterActivity extends Activity {
 
@@ -38,14 +36,26 @@ public class TVTogeterActivity extends Activity {
 		loginBtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				final String msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked(),
-						keepLogin.isChecked());
+				final String msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked(), keepLogin.isChecked());
 				if (action == true) {
-					Intent intent = new Intent(getApplicationContext(), TextDemoActivity.class);
-					Bundle bundle = new Bundle();
-					bundle.putString("demoMsg", msg);
-					intent.putExtras(bundle);
-					startActivity(intent);
+
+					WaitingDialogUtil.showWaitingDialog(TVTogeterActivity.this, new Runnable() {
+
+						public void run() {
+							try {
+								Thread.sleep(3000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+
+					}, "正在注册中...");
+					// Intent intent = new Intent(getApplicationContext(),
+					// TextDemoActivity.class);
+					// Bundle bundle = new Bundle();
+					// bundle.putString("demoMsg", msg);
+					// intent.putExtras(bundle);
+					// startActivity(intent);
 					// String phoneNum = "2323232323";// 电话号码
 					// Intent intent = new Intent();
 					// intent.setAction(Intent.ACTION_DIAL);
