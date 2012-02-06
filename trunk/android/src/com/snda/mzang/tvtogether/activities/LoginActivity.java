@@ -1,5 +1,7 @@
 package com.snda.mzang.tvtogether.activities;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -35,44 +37,40 @@ public class LoginActivity extends Activity {
 
 			public void onClick(View v) {
 				final String msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked(), keepLogin.isChecked());
-				if (action == true) {
 
-					PopupTipsUtil.showWaitingDialog(LoginActivity.this, new Runnable() {
+				PopupTipsUtil.showWaitingDialog(LoginActivity.this, new Runnable() {
 
-						public void run() {
-							try {
-								Thread.sleep(3000);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
+					public void run() {
+						try {
+							Thread.sleep(3000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
+					}
 
-					}, "正在注册中...");
-					// Intent intent = new Intent(getApplicationContext(),
-					// TextDemoActivity.class);
-					// Bundle bundle = new Bundle();
-					// bundle.putString("demoMsg", msg);
-					// intent.putExtras(bundle);
-					// startActivity(intent);
-					// String phoneNum = "2323232323";// 电话号码
-					// Intent intent = new Intent();
-					// intent.setAction(Intent.ACTION_DIAL);
-					// intent.setData(Uri.parse("tel:" + phoneNum));
-					// startActivity(intent);
+				}, "正在注册中...");
+				// Intent intent = new Intent(getApplicationContext(),
+				// TextDemoActivity.class);
+				// Bundle bundle = new Bundle();
+				// bundle.putString("demoMsg", msg);
+				// intent.putExtras(bundle);
+				// startActivity(intent);
 
-				} else {
-					PopupTipsUtil.displayToast(LoginActivity.this, msg);
-				}
-				action = !action;
+				// String phoneNum = "2323232323";// 电话号码
+				// Intent intent = new Intent();
+				// intent.setAction(Intent.ACTION_DIAL);
+				// intent.setData(Uri.parse("tel:" + phoneNum));
+				// startActivity(intent);
+
 			}
 
 		});
 	}
 
 	public String constuctLoginMessage(String userName, String password, boolean regNewUser, boolean keepLogin) {
+		JSONObject login = new JSONObject();
 		StringBuilder content = new StringBuilder();
 		content.append(userName).append("; ").append(password).append("; ").append(regNewUser).append("; ").append(keepLogin);
 		return content.toString();
 	}
-
 }
