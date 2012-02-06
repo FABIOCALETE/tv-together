@@ -11,14 +11,14 @@
         android:label="@string/app_name" >
         <activity
             android:label="@string/app_name"
-            android:name=".TVTogeterActivity" >
+            android:name=".activities.TVTogeterActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TextDemoActivity" android:label="@string/test_demo"></activity>
+        <activity android:name=".activities.TextDemoActivity" android:label="@string/test_demo"></activity>
     </application>
 
 </manifest>
