@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.snda.mzang.tvtogether.R;
 import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
 
-public class TVTogeterActivity extends Activity {
+public class LoginActivity extends Activity {
 
 	private static boolean action = false;
 
@@ -37,7 +37,7 @@ public class TVTogeterActivity extends Activity {
 				final String msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked(), keepLogin.isChecked());
 				if (action == true) {
 
-					PopupTipsUtil.showWaitingDialog(TVTogeterActivity.this, new Runnable() {
+					PopupTipsUtil.showWaitingDialog(LoginActivity.this, new Runnable() {
 
 						public void run() {
 							try {
@@ -61,7 +61,7 @@ public class TVTogeterActivity extends Activity {
 					// startActivity(intent);
 
 				} else {
-					PopupTipsUtil.displayToast(TVTogeterActivity.this, msg);
+					PopupTipsUtil.displayToast(LoginActivity.this, msg);
 				}
 				action = !action;
 			}
