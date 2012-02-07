@@ -92,16 +92,6 @@ public class LoginActivity extends Activity {
 
 		@Override
 		protected void postProcess(JSONObject result) {
-			try {
-				while (waitingDialog == null) {
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-					}
-				}
-			} finally {
-				waitingDialog.dismiss();
-			}
 			String displayMsg = "=====\r\n" + result.toString() + "\r\n=====";
 			PopupTipsUtil.displayToast(LoginActivity.this, displayMsg);
 			Intent intent = new Intent(getApplicationContext(), TextDemoActivity.class);
