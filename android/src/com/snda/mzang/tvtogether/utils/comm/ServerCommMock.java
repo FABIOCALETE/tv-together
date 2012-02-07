@@ -39,6 +39,11 @@ public class ServerCommMock implements IServerComm {
 			if (handler == null) {
 				throw new InvalidatedServerDataException("No handler found for name \"" + handlerName + "\"");
 			}
+			try {
+				// mock waiting :)
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+			}
 			return handler.handle(msg);
 		} catch (JSONException e) {
 			throw new InvalidatedClientDataException();

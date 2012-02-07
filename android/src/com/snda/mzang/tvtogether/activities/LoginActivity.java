@@ -55,7 +55,7 @@ public class LoginActivity extends Activity {
 						Log.d(Constants.TAG, content);
 					}
 
-				}, "ÕýÔÚ×¢²áÖÐ...");
+				}, "æ­£åœ¨ç™»å½•ä¸­...");
 				// Intent intent = new Intent(getApplicationContext(),
 				// TextDemoActivity.class);
 				// Bundle bundle = new Bundle();
@@ -63,7 +63,7 @@ public class LoginActivity extends Activity {
 				// intent.putExtras(bundle);
 				// startActivity(intent);
 
-				// String phoneNum = "2323232323";// µç»°ºÅÂë
+				// String phoneNum = "2323232323";
 				// Intent intent = new Intent();
 				// intent.setAction(Intent.ACTION_DIAL);
 				// intent.setData(Uri.parse("tel:" + phoneNum));
