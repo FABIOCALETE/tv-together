@@ -4,7 +4,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,8 +21,11 @@ import com.snda.mzang.tvtogether.utils.Constants;
 import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.UserSession;
 import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
+import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
 public class LoginActivity extends Activity {
+
+	private final Handler uiHandler = new Handler();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -39,23 +46,10 @@ public class LoginActivity extends Activity {
 		loginBtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				boolean keepLoginBoolean = keepLogin.isChecked();
-				if (keepLoginBoolean == true) {
-					Log.d(Constants.TAG, "Need to store user setting");
-				}
+				final JSONObject msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked(), keepLogin.isChecked());
 
-				PopupTipsUtil.showWaitingDialog(LoginActivity.this, new Runnable() {
-
-					public void run() {
-						final JSONObject msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked());
-						JSONObject ret = Constants.comm.sendMsg(msg);
-						String content = JSONUtil.getString(ret, "result");
-						// PopupTipsUtil.displayToast(LoginActivity.this,
-						// content);
-						Log.d(Constants.TAG, content);
-					}
-
-				}, "正在登录中...");
+				LoginTask task = new LoginTask(LoginActivity.this, true, "正在登录中...");
+				task.execute(msg);
 				// Intent intent = new Intent(getApplicationContext(),
 				// TextDemoActivity.class);
 				// Bundle bundle = new Bundle();
@@ -74,13 +68,59 @@ public class LoginActivity extends Activity {
 		});
 	}
 
-	public JSONObject constuctLoginMessage(String userName, String password, boolean regNewUser) {
+	class LoginTask extends WaitingDialogAsyncTask<JSONObject, Integer, JSONObject> {
+
+		public LoginTask(Context context, boolean showWaitingDialog, String waitingMsg) {
+			super(context, showWaitingDialog, waitingMsg);
+		}
+
+		ProgressDialog waitingDialog;
+
+		@Override
+		protected JSONObject process(final JSONObject data) {
+			boolean keepLoginBoolean = JSONUtil.getBoolean(data, "keepLogin");
+			if (keepLoginBoolean == true) {
+				Log.d(Constants.TAG, "Need to store user setting");
+			}
+
+			JSONObject ret = Constants.comm.sendMsg(data);
+			String content = JSONUtil.getString(ret, "result");
+			Log.d(Constants.TAG, content);
+
+			return ret;
+		}
+
+		@Override
+		protected void postProcess(JSONObject result) {
+			try {
+				while (waitingDialog == null) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+					}
+				}
+			} finally {
+				waitingDialog.dismiss();
+			}
+			String displayMsg = "=====\r\n" + result.toString() + "\r\n=====";
+			PopupTipsUtil.displayToast(LoginActivity.this, displayMsg);
+			Intent intent = new Intent(getApplicationContext(), TextDemoActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("demoMsg", displayMsg);
+			intent.putExtras(bundle);
+			startActivity(intent);
+		}
+
+	}
+
+	public JSONObject constuctLoginMessage(String userName, String password, boolean regNewUser, boolean keepLogin) {
 		JSONObject login = new JSONObject();
 
 		UserSession.setUserName(userName);
 		UserSession.setPassword(password);
 		try {
 			login.put("handler", "loginHandler");
+			login.put("keepLogin", keepLogin);
 			login.put("regNewUser", regNewUser);
 			return login;
 		} catch (JSONException e) {
