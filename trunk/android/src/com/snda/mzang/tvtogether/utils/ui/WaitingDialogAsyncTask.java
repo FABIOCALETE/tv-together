@@ -65,7 +65,9 @@ public abstract class WaitingDialogAsyncTask<Params, Progress, Result> extends A
 
 	@Override
 	protected void onPostExecute(Result result) {
-		if (showWaitingDialog == true) {
+		if (waitingDialog != null) {
+			waitingDialog.dismiss();
+		} else if (showWaitingDialog == true) {
 			int retry = 0;
 			try {
 				while (waitingDialog == null && retry < 10) {

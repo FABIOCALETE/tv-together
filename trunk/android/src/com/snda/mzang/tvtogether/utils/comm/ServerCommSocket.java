@@ -37,11 +37,13 @@ public class ServerCommSocket implements IServerComm {
 			throw new InvalidatedClientDataException();
 		}
 		Socket socket = new Socket();
+		PrintWriter out = null;
+		BufferedReader reader = null;
 		try {
 			socket.connect(address);
-			PrintWriter out = new PrintWriter(socket.getOutputStream());
+			out = new PrintWriter(socket.getOutputStream());
 			out.write(msg.toString());
-			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			StringBuilder content = new StringBuilder();
 			String line = null;
 			while ((line = reader.readLine()) != null) {
@@ -52,6 +54,30 @@ public class ServerCommSocket implements IServerComm {
 			throw new CommunicationException(e);
 		} catch (JSONException e) {
 			throw new InvalidatedServerDataException(e);
+		} finally {
+
+			if (socket != null) {
+				try {
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (out != null) {
+				try {
+					out.close();
+				} catch (Exception e) {
+				}
+			}
+
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+				}
+			}
+
 		}
 
 	}

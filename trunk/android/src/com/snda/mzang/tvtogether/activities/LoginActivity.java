@@ -8,7 +8,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,8 +23,6 @@ import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
 public class LoginActivity extends Activity {
-
-	private final Handler uiHandler = new Handler();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -48,7 +45,7 @@ public class LoginActivity extends Activity {
 			public void onClick(View v) {
 				final JSONObject msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked(), keepLogin.isChecked());
 
-				LoginTask task = new LoginTask(LoginActivity.this, true, "正在登录中...");
+				LoginTask task = new LoginTask(null, false, null);
 				task.execute(msg);
 				// Intent intent = new Intent(getApplicationContext(),
 				// TextDemoActivity.class);
