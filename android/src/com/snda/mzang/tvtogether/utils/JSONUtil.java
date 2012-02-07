@@ -16,4 +16,15 @@ public class JSONUtil {
 		}
 	}
 
+	public static boolean getBoolean(JSONObject data, String key) {
+		if (data == null) {
+			return false;
+		}
+		try {
+			return data.getBoolean(key);
+		} catch (JSONException e) {
+			return false;
+		}
+	}
+
 }

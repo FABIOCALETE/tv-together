@@ -1,12 +1,10 @@
 package com.snda.mzang.tvtogether.activities;
 
-import com.snda.mzang.tvtogether.R;
-import com.snda.mzang.tvtogether.R.id;
-import com.snda.mzang.tvtogether.R.layout;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.snda.mzang.tvtogether.R;
 
 public class TextDemoActivity extends Activity {
 
