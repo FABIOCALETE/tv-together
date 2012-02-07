@@ -15,10 +15,10 @@ public class PopupTipsUtil {
 	public static void showWaitingDialog(final Activity parent, final Runnable runnable, String msg) {
 
 		if (StringUtils.isEmpty(msg)) {
-			msg = "ÕıÔÚ´¦ÀíÖĞ...";
+			msg = "æ­£åœ¨å¤„ç†ä¸­...";
 		}
 
-		final ProgressDialog waitingDialog = ProgressDialog.show(parent, "ÇëµÈ´ı...", msg, true);
+		final ProgressDialog waitingDialog = ProgressDialog.show(parent, "è¯·ç­‰å¾…...", msg, true);
 
 		ThreadPoolUtil.execute(new Runnable() {
 
