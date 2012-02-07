@@ -17,13 +17,6 @@ public abstract class WaitingDialogAsyncTask<Params, Progress, Result> extends A
 
 	private String waitingMsg;
 
-	public WaitingDialogAsyncTask(final Context context, Handler uiHandler, String waitingMsg) {
-		this.context = context;
-		this.uiHandler = uiHandler;
-		this.showWaitingDialog = context != null && uiHandler != null;
-		this.waitingMsg = waitingMsg;
-	}
-
 	public WaitingDialogAsyncTask(final Context context, String waitingMsg) {
 		this.context = context;
 		this.showWaitingDialog = context != null;
