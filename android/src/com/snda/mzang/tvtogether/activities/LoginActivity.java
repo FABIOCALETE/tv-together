@@ -21,6 +21,7 @@ import com.snda.mzang.tvtogether.R;
 import com.snda.mzang.tvtogether.model.UserInfo;
 import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.JSONUtil;
+import com.snda.mzang.tvtogether.utils.MD5Helper;
 import com.snda.mzang.tvtogether.utils.UserSession;
 import com.snda.mzang.tvtogether.utils.db.DBUtil;
 import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
@@ -57,8 +58,8 @@ public class LoginActivity extends Activity {
 		loginBtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				JSONObject msg = constuctLoginMessage(userName.getText().toString(), userInfo == null ? password.getText().toString() : userInfo.getPassword(),
-						regNewUser.isChecked(), keepLogin.isChecked());
+				String passwordMD5 = userInfo == null ? MD5Helper.getMD5(password.getText().toString()) : userInfo.getPassword();
+				JSONObject msg = constuctLoginMessage(userName.getText().toString(), passwordMD5, regNewUser.isChecked(), keepLogin.isChecked());
 
 				handleLogin(msg);
 				// Intent intent = new Intent(getApplicationContext(),
