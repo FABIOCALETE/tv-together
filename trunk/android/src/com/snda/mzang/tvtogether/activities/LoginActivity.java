@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,9 +18,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.snda.mzang.tvtogether.R;
-import com.snda.mzang.tvtogether.utils.Constants;
+import com.snda.mzang.tvtogether.model.UserInfo;
+import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.UserSession;
+import com.snda.mzang.tvtogether.utils.db.DBUtil;
 import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
@@ -40,13 +44,23 @@ public class LoginActivity extends Activity {
 
 		final CheckBox keepLogin = (CheckBox) this.findViewById(R.id.loginKeepLogin);
 
+		DBUtil.initDB(this);
+
+		final UserInfo userInfo = loadUserInfoFromDB();
+
+		if (userInfo != null) {
+			userName.setText(userInfo.getUserName());
+			password.setText(C.dummyPassword);
+			keepLogin.setChecked(true);
+		}
+
 		loginBtn.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				final JSONObject msg = constuctLoginMessage(userName.getText().toString(), password.getText().toString(), regNewUser.isChecked(), keepLogin.isChecked());
+				JSONObject msg = constuctLoginMessage(userName.getText().toString(), userInfo == null ? password.getText().toString() : userInfo.getPassword(),
+						regNewUser.isChecked(), keepLogin.isChecked());
 
-				LoginTask task = new LoginTask(null, false, null);
-				task.execute(msg);
+				handleLogin(msg);
 				// Intent intent = new Intent(getApplicationContext(),
 				// TextDemoActivity.class);
 				// Bundle bundle = new Bundle();
@@ -65,24 +79,49 @@ public class LoginActivity extends Activity {
 		});
 	}
 
+	private UserInfo loadUserInfoFromDB() {
+		UserInfo userInfo = null;
+		SQLiteDatabase db = this.openOrCreateDatabase(C.DB_NAME, MODE_PRIVATE, null);
+		Cursor users = db.query(C.TB_USER, new String[] { "username", "password" }, null, null, null, null, null);
+		if (users.moveToNext() == true) {
+			userInfo = new UserInfo();
+			userInfo.setUserName(users.getString(0));
+			userInfo.setPassword(users.getString(1));
+		}
+		db.close();
+		return userInfo;
+	}
+
+	private void handleLogin(final JSONObject msg) {
+		boolean keepLoginBoolean = JSONUtil.getBoolean(msg, "keepLogin");
+		SQLiteDatabase db = this.openOrCreateDatabase(C.DB_NAME, MODE_PRIVATE, null);
+
+		if (keepLoginBoolean == true) {
+			db.execSQL("insert into " + C.TB_USER + " values (?,?)", new String[] { JSONUtil.getString(msg, "userName"), JSONUtil.getString(msg, "password") });
+		} else {
+			db.execSQL("delete from " + C.TB_USER + " where userName=?", new String[] { JSONUtil.getString(msg, "userName") });
+		}
+
+		db.close();
+		LoginTask task = new LoginTask(this, "登录中...");
+		task.execute(msg);
+
+	}
+
 	class LoginTask extends WaitingDialogAsyncTask<JSONObject, Integer, JSONObject> {
 
-		public LoginTask(Context context, boolean showWaitingDialog, String waitingMsg) {
-			super(context, showWaitingDialog, waitingMsg);
+		public LoginTask(Context context, String waitingMsg) {
+			super(context, waitingMsg);
 		}
 
 		ProgressDialog waitingDialog;
 
 		@Override
 		protected JSONObject process(final JSONObject data) {
-			boolean keepLoginBoolean = JSONUtil.getBoolean(data, "keepLogin");
-			if (keepLoginBoolean == true) {
-				Log.d(Constants.TAG, "Need to store user setting");
-			}
 
-			JSONObject ret = Constants.comm.sendMsg(data);
+			JSONObject ret = C.comm.sendMsg(data);
 			String content = JSONUtil.getString(ret, "result");
-			Log.d(Constants.TAG, content);
+			Log.d(C.TAG, content);
 
 			return ret;
 		}
@@ -96,6 +135,7 @@ public class LoginActivity extends Activity {
 			bundle.putString("demoMsg", displayMsg);
 			intent.putExtras(bundle);
 			startActivity(intent);
+			LoginActivity.this.finish();
 		}
 
 	}
@@ -108,6 +148,8 @@ public class LoginActivity extends Activity {
 		try {
 			login.put("handler", "loginHandler");
 			login.put("keepLogin", keepLogin);
+			login.put("userName", userName);
+			login.put("password", password);
 			login.put("regNewUser", regNewUser);
 			return login;
 		} catch (JSONException e) {
