@@ -16,15 +16,15 @@ public class MD5Helper {
 		try {
 			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
 			md.update(content.getBytes(Charset.forName("UTF-8")));
-			// ½á¹ûÎª128Î»µÄÕûÊı£¬¾ÍÊÇ16¡Á8¸ö×Ö½Ú¡£
+			// ç»“æœä¸º128ä½çš„æ•´æ•°ï¼Œå°±æ˜¯16Ã—8ä¸ªå­—èŠ‚ã€‚
 			byte tmp[] = md.digest();
-			// Ã¿¸ö×Ö½ÚÓÃÁ½¸ö×Ö·û±íÊ¾
-			// ´ú±íÒÑ¾­Ìî³äµ½µÄÎ»
+			// æ¯ä¸ªå­—èŠ‚ç”¨ä¸¤ä¸ªå­—ç¬¦è¡¨ç¤º
+			// ä»£è¡¨å·²ç»å¡«å……åˆ°çš„ä½
 			for (int i = 0; i < 16; i++) {
 				byte data = tmp[i];
-				// Âß¼­ÓÒÒÆ¶¯ËÄÎ»£¬±íÊ¾Ç°ËÄ¸ö×Ö½Ú
+				// é€»è¾‘å³ç§»åŠ¨å››ä½ï¼Œè¡¨ç¤ºå‰å››ä¸ªå­—èŠ‚
 				ret.append(hexDigits[data >>> 4 & 0xf]);
-				// Ä¨È¥Ç°ËÄ¸ö×Ö½Ú£¬´ú±íºóËÄ¸ö×Ö½Ú
+				// æŠ¹å»å‰å››ä¸ªå­—èŠ‚ï¼Œä»£è¡¨åå››ä¸ªå­—èŠ‚
 				ret.append(hexDigits[data & 0xf]);
 			}
 		} catch (Exception e) {
