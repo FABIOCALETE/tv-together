@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.snda.mzang.tvtogether.exceptions.CommunicationException;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedClientDataException;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedServerDataException;
+import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.UserSession;
 
 public class ServerCommSocket implements IServerComm {
@@ -27,12 +28,12 @@ public class ServerCommSocket implements IServerComm {
 		if (msg == null) {
 			throw new InvalidatedClientDataException("Message is null");
 		}
-		if (msg.has("handler") == false) {
+		if (msg.has(C.handler) == false) {
 			throw new InvalidatedClientDataException("Message has no handler");
 		}
 		try {
-			msg.put("userName", UserSession.getUserName());
-			msg.put("password", UserSession.getPassword());
+			msg.put(C.username, UserSession.getUserName());
+			msg.put(C.password, UserSession.getPassword());
 		} catch (JSONException e1) {
 			throw new InvalidatedClientDataException();
 		}

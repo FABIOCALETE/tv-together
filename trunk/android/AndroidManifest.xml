@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.TextDemoActivity" android:label="@string/test_demo"></activity>
+        <activity android:name=".activities.ChannelListActivity" android:label="@string/channel_channelList_lbl"></activity>
     </application>
 
 </manifest>
