@@ -97,7 +97,16 @@ class GetChannelListHandlerMockup implements MockupHandler {
 			channels.put("中央电视台");
 			channels.put("OO电视台");
 			channels.put("XX电视台");
+			channels.put("BBC电视台");
+			channels.put("VOA电视台");
 			channels.put("CNN");
+			channels.put("探索·发现频道电视台");
+			channels.put("共匪是傻逼电视台");
+			channels.put("CCAV电视台");
+			channels.put("CC-AV电视台");
+			channels.put("CC既AV电视台");
+			channels.put("环球时报统一全世界电视台");
+			channels.put("人民日报日人民电视台");
 			ret.put(C.channels, channels);
 		} catch (JSONException e) {
 			e.printStackTrace();
