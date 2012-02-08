@@ -24,7 +24,6 @@ import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.MD5Helper;
 import com.snda.mzang.tvtogether.utils.UserSession;
 import com.snda.mzang.tvtogether.utils.db.DBUtil;
-import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
 public class LoginActivity extends Activity {
@@ -83,7 +82,7 @@ public class LoginActivity extends Activity {
 	private UserInfo loadUserInfoFromDB() {
 		UserInfo userInfo = null;
 		SQLiteDatabase db = this.openOrCreateDatabase(C.DB_NAME, MODE_PRIVATE, null);
-		Cursor users = db.query(C.TB_USER, new String[] { "username", "password" }, null, null, null, null, null);
+		Cursor users = db.query(C.TB_USER, new String[] { C.col_username, C.col_password }, null, null, null, null, null);
 		if (users.moveToNext() == true) {
 			userInfo = new UserInfo();
 			userInfo.setUserName(users.getString(0));
@@ -94,13 +93,13 @@ public class LoginActivity extends Activity {
 	}
 
 	private void handleLogin(final JSONObject msg) {
-		boolean keepLoginBoolean = JSONUtil.getBoolean(msg, "keepLogin");
+		boolean keepLoginBoolean = JSONUtil.getBoolean(msg, C.keepLogin);
 		SQLiteDatabase db = this.openOrCreateDatabase(C.DB_NAME, MODE_PRIVATE, null);
 
 		if (keepLoginBoolean == true) {
-			db.execSQL("insert into " + C.TB_USER + " values (?,?)", new String[] { JSONUtil.getString(msg, "userName"), JSONUtil.getString(msg, "password") });
+			db.execSQL("insert into " + C.TB_USER + " values (?,?)", new String[] { JSONUtil.getString(msg, C.username), JSONUtil.getString(msg, C.password) });
 		} else {
-			db.execSQL("delete from " + C.TB_USER + " where userName=?", new String[] { JSONUtil.getString(msg, "userName") });
+			db.execSQL("delete from " + C.TB_USER + " where " + C.col_username + "=?", new String[] { JSONUtil.getString(msg, C.username) });
 		}
 
 		db.close();
@@ -121,7 +120,7 @@ public class LoginActivity extends Activity {
 		protected JSONObject process(final JSONObject data) {
 
 			JSONObject ret = C.comm.sendMsg(data);
-			String content = JSONUtil.getString(ret, "result");
+			String content = JSONUtil.getString(ret, C.result);
 			Log.d(C.TAG, content);
 
 			return ret;
@@ -129,12 +128,10 @@ public class LoginActivity extends Activity {
 
 		@Override
 		protected void postProcess(JSONObject result) {
-			String displayMsg = "=====\r\n" + result.toString() + "\r\n=====";
-			PopupTipsUtil.displayToast(LoginActivity.this, displayMsg);
-			Intent intent = new Intent(getApplicationContext(), TextDemoActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("demoMsg", displayMsg);
-			intent.putExtras(bundle);
+			Intent intent = new Intent(getApplicationContext(), ChannelListActivity.class);
+			// Bundle bundle = new Bundle();
+			// bundle.putString("demoMsg", displayMsg);
+			// intent.putExtras(bundle);
 			startActivity(intent);
 			LoginActivity.this.finish();
 		}
@@ -147,11 +144,11 @@ public class LoginActivity extends Activity {
 		UserSession.setUserName(userName);
 		UserSession.setPassword(password);
 		try {
-			login.put("handler", "loginHandler");
-			login.put("keepLogin", keepLogin);
-			login.put("userName", userName);
-			login.put("password", password);
-			login.put("regNewUser", regNewUser);
+			login.put(C.handler, "loginHandler");
+			login.put(C.keepLogin, keepLogin);
+			login.put(C.username, userName);
+			login.put(C.password, password);
+			login.put(C.regNewUser, regNewUser);
 			return login;
 		} catch (JSONException e) {
 			e.printStackTrace();

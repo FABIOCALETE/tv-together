@@ -22,10 +22,24 @@ public interface C {
 	 */
 	IServerComm comm = new ServerCommMock();
 
+	String result = "result";
+	String success = "success";
+	String fail = "fail";
+	String handler = "handler";
+	String username = "username";
+	String password = "password";
+	String keepLogin = "keepLogin";
+	String regNewUser = "regNewUser";
+
+	String channels = "channels";
+
 	/**
 	 * 数据库相关
 	 */
 	String DB_NAME = "TVTogetherDB";
 
 	String TB_USER = "UserInfo";
+
+	String col_username = "username";
+	String col_password = "password";
 }

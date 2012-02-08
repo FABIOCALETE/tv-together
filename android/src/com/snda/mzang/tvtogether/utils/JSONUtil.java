@@ -1,5 +1,6 @@
 package com.snda.mzang.tvtogether.utils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,6 +25,22 @@ public class JSONUtil {
 			return data.getBoolean(key);
 		} catch (JSONException e) {
 			return false;
+		}
+	}
+
+	public static String[] getStringArray(JSONObject data, String key) {
+		if (data == null) {
+			return null;
+		}
+		try {
+			JSONArray array = data.getJSONArray(key);
+			String[] ret = new String[array.length()];
+			for (int i = 0; i < ret.length; i++) {
+				ret[i] = array.getString(i);
+			}
+			return ret;
+		} catch (JSONException e) {
+			return null;
 		}
 	}
 

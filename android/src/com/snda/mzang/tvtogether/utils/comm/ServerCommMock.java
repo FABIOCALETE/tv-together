@@ -3,11 +3,13 @@ package com.snda.mzang.tvtogether.utils.comm;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.snda.mzang.tvtogether.exceptions.InvalidatedClientDataException;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedServerDataException;
+import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.UserSession;
 
 public class ServerCommMock implements IServerComm {
@@ -15,26 +17,29 @@ public class ServerCommMock implements IServerComm {
 	private Map<String, MockupHandler> handlers = new HashMap<String, MockupHandler>();
 
 	public ServerCommMock() {
-		LoginHandlerMockup handler = new LoginHandlerMockup();
+		MockupHandler handler = new LoginHandlerMockup();
 		handlers.put(handler.getHandlerName(), handler);
+		handler = new GetChannelListHandlerMockup();
+		handlers.put(handler.getHandlerName(), handler);
+
 	}
 
 	public JSONObject sendMsg(JSONObject msg) {
 		if (msg == null) {
 			throw new InvalidatedClientDataException("Message is null");
 		}
-		if (msg.has("handler") == false) {
+		if (msg.has(C.handler) == false) {
 			throw new InvalidatedClientDataException("Message has no handler");
 		}
 		try {
-			msg.put("userName", UserSession.getUserName());
-			msg.put("password", UserSession.getPassword());
+			msg.put(C.username, UserSession.getUserName());
+			msg.put(C.password, UserSession.getPassword());
 		} catch (JSONException e1) {
 			throw new InvalidatedClientDataException();
 		}
 
 		try {
-			String handlerName = (String) msg.get("handler");
+			String handlerName = (String) msg.get(C.handler);
 			MockupHandler handler = handlers.get(handlerName);
 			if (handler == null) {
 				throw new InvalidatedServerDataException("No handler found for name \"" + handlerName + "\"");
@@ -68,11 +73,35 @@ class LoginHandlerMockup implements MockupHandler {
 	public JSONObject handle(JSONObject msg) {
 		JSONObject ret = new JSONObject();
 		try {
-			ret.put("result", "success");
+			ret.put(C.result, C.success);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return ret;
 	}
 
+}
+
+class GetChannelListHandlerMockup implements MockupHandler {
+
+	public String getHandlerName() {
+		return "getChannelListHandler";
+	}
+
+	public JSONObject handle(JSONObject msg) {
+		JSONObject ret = new JSONObject();
+		try {
+			ret.put(C.result, C.success);
+			JSONArray channels = new JSONArray();
+			channels.put("山东电视台");
+			channels.put("中央电视台");
+			channels.put("OO电视台");
+			channels.put("XX电视台");
+			channels.put("CNN");
+			ret.put(C.channels, channels);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
 }
