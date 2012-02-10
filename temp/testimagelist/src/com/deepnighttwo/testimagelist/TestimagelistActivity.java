@@ -22,22 +22,18 @@ import android.widget.Toast;
 
 public class TestimagelistActivity extends ListActivity {
 
-	public static Bitmap[] images = null;
-
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
+		this.setTitle("测试List");
 		try {
-			createImageFiles();
+			setAdaptersForImageList();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.setTitle("测试List");
-		String[] values = new String[] { "Android", "iPhone", "WindowsMobile", "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X", "Linux", "OS/2" };
-		MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(this, values);
-		setListAdapter(adapter);
+
 	}
 
-	private void createImageFiles() throws IOException {
+	private void setAdaptersForImageList() throws IOException {
 		String imageRoot = "/sdcard/tempdir";
 		File dir = new File(imageRoot);
 		if (dir.exists() == false || dir.isDirectory() == false) {
@@ -78,8 +74,6 @@ public class TestimagelistActivity extends ListActivity {
 
 		List<String> resName = new ArrayList<String>();
 
-		int postfix = 0;
-
 		JarFile file = new JarFile(jarFilePath);
 
 		Enumeration<JarEntry> ets = file.entries();
@@ -88,11 +82,12 @@ public class TestimagelistActivity extends ListActivity {
 
 		while (ets.hasMoreElements() == true) {
 			JarEntry jarEntry = ets.nextElement();
-			if (jarEntry.getName().startsWith(imageDir) == false) {
+			String jarEntryPath = jarEntry.getName();
+			if (jarEntryPath.startsWith(imageDir) == false) {
 				continue;
 			}
 			InputStream input = file.getInputStream(jarEntry);
-			String imgFileName = "image" + postfix++;
+			String imgFileName = jarEntryPath.substring(jarEntryPath.lastIndexOf('/') + 1, jarEntryPath.lastIndexOf('.'));
 			resName.add(imgFileName);
 			File dataFile = new File(dir, imgFileName);
 			if (dataFile.exists() == false || dataFile.isFile() == false) {
@@ -108,11 +103,14 @@ public class TestimagelistActivity extends ListActivity {
 			os.close();
 		}
 
-		images = new Bitmap[resName.size()];
+		Bitmap[] images = new Bitmap[resName.size()];
 
 		for (int i = 0; i < resName.size(); i++) {
 			images[i] = BitmapFactory.decodeFile(imageRoot + "/" + resName.get(i));
 		}
+
+		MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(this, resName.toArray(new String[0]), images);
+		setListAdapter(adapter);
 	}
 
 	@Override

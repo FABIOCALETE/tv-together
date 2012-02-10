@@ -1,6 +1,7 @@
 package com.deepnighttwo.testimagelist;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,13 @@ import android.widget.TextView;
 public class MySimpleArrayAdapter extends ArrayAdapter<String> {
 	private final Context context;
 	private final String[] values;
+	private final Bitmap[] images;
 
-	public MySimpleArrayAdapter(Context context, String[] values) {
+	public MySimpleArrayAdapter(Context context, String[] values, Bitmap[] images) {
 		super(context, R.layout.main, values);
 		this.context = context;
 		this.values = values;
+		this.images = images;
 	}
 
 	@Override
@@ -26,7 +29,7 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 		textView.setText(values[position]);
 
-		imageView.setImageBitmap(TestimagelistActivity.images[(int) (Math.random() * TestimagelistActivity.images.length)]);
+		imageView.setImageBitmap(images[position]);
 
 		return rowView;
 	}
