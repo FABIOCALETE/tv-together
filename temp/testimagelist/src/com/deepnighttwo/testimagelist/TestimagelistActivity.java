@@ -69,7 +69,7 @@ public class TestimagelistActivity extends ListActivity {
 		// os.close();
 		// }
 
-		String oneRes = "com/deepnighttwo/testimagelist/res/github.jpg";
+		String oneRes = "com/deepnighttwo/testimagelist/res/CCAV字电视台.png";
 		URL url = this.getClassLoader().getResource(oneRes);
 
 		String path = url.getPath();
