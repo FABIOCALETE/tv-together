@@ -42,4 +42,9 @@ public interface C {
 
 	String col_username = "username";
 	String col_password = "password";
+
+	/**
+	 * 文件相关
+	 */
+	String CHANNEL_RES_DIR = "/sdcard/tvtogether/channelres/";
 }

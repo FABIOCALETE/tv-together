@@ -1,26 +1,36 @@
 package com.snda.mzang.tvtogether.activities;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
-import android.app.Activity;
-import android.app.ListFragment;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.snda.mzang.tvtogether.R;
+import com.snda.mzang.tvtogether.model.ChannelInfo;
 import com.snda.mzang.tvtogether.utils.C;
-import com.snda.mzang.tvtogether.utils.JSONUtil;
-import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
-public class ChannelListActivity extends Activity {
-
-	// private LinearLayout list;
+public class ChannelListActivity extends ListActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,39 +47,12 @@ public class ChannelListActivity extends Activity {
 
 	}
 
-	public class ArrayListFragment extends ListFragment {
-
-		String[] list;
-
-		public ArrayListFragment(String[] list) {
-			this.list = list;
-		}
-
-		@Override
-		public void onActivityCreated(Bundle savedInstanceState) {
-			super.onActivityCreated(savedInstanceState);
-			setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, list));
-		}
-
-		@Override
-		public void onListItemClick(ListView l, View v, int position, long id) {
-			String channelName = (String) l.getItemAtPosition(position);
-			Log.i("TVTogether", "Item clicked: " + id + ", Text: " + channelName);
-			PopupTipsUtil.displayToast(ChannelListActivity.this, channelName + " is clicked");
-		}
-	}
-
 	public void buildChannelList() {
 		LoadChannelListTask task = new LoadChannelListTask(this, "正在载入电视频道...");
-		JSONObject req = new JSONObject();
-		try {
-			req.put("handler", "getChannelListHandler");
-			task.execute(req);
-		} catch (JSONException e) {
-		}
+		task.execute("com/snda/mzang/tvtogether/res/CCAV电视台.png");
 	}
 
-	class LoadChannelListTask extends WaitingDialogAsyncTask<JSONObject, Integer, JSONObject> {
+	class LoadChannelListTask extends WaitingDialogAsyncTask<String, Integer, List<ChannelInfo>> {
 
 		public LoadChannelListTask(Context context, String waitingMsg) {
 			super(context, waitingMsg);
@@ -78,27 +61,107 @@ public class ChannelListActivity extends Activity {
 		ProgressDialog waitingDialog;
 
 		@Override
-		protected JSONObject process(final JSONObject data) {
+		protected List<ChannelInfo> process(final String oneRes) {
+			try {
 
-			JSONObject ret = C.comm.sendMsg(data);
-			String content = JSONUtil.getString(ret, C.result);
-			Log.d(C.TAG, content);
+				String imageRoot = C.CHANNEL_RES_DIR;
 
-			return ret;
+				File dir = new File(imageRoot);
+				if (dir.exists() == false || dir.isDirectory() == false) {
+					dir.mkdirs();
+				}
+
+				URL url = ChannelListActivity.this.getClassLoader().getResource(oneRes);
+
+				String path = url.getPath();
+
+				String jarFilePath = path.substring(path.indexOf('/'), path.indexOf('!'));
+
+				List<String> resName = new ArrayList<String>();
+
+				JarFile file = new JarFile(jarFilePath);
+
+				Enumeration<JarEntry> ets = file.entries();
+
+				String imageDir = oneRes.substring(0, oneRes.lastIndexOf('/') + 1);
+
+				while (ets.hasMoreElements() == true) {
+					JarEntry jarEntry = ets.nextElement();
+					String jarEntryPath = jarEntry.getName();
+					if (jarEntryPath.startsWith(imageDir) == false) {
+						continue;
+					}
+					InputStream input = file.getInputStream(jarEntry);
+					String imgFileName = jarEntryPath.substring(jarEntryPath.lastIndexOf('/') + 1, jarEntryPath.lastIndexOf('.'));
+					resName.add(imgFileName);
+					File dataFile = new File(dir, imgFileName);
+					if (dataFile.exists() == false || dataFile.isFile() == false) {
+						dataFile.createNewFile();
+					}
+					OutputStream os = new FileOutputStream(dataFile);
+					byte[] buffer = new byte[1024];
+					int len = -1;
+					while ((len = input.read(buffer)) != -1) {
+						os.write(buffer, 0, len);
+					}
+					input.close();
+					os.close();
+				}
+
+				List<ChannelInfo> images = new ArrayList<ChannelInfo>(resName.size());
+
+				for (int i = 0; i < resName.size(); i++) {
+					images.add(new ChannelInfo(resName.get(i), BitmapFactory.decodeFile(imageRoot + "/" + resName.get(i))));
+				}
+
+				return images;
+			} catch (Exception ex) {
+				return null;
+			}
 		}
 
 		@Override
-		protected void postProcess(JSONObject result) {
-			if (C.success.equalsIgnoreCase(JSONUtil.getString(result, C.result)) == false) {
+		protected void postProcess(List<ChannelInfo> result) {
+			if (result == null) {
 				return;
 			}
-
-			// Create the list fragment and add it as our sole content.
-			if (getFragmentManager().findFragmentById(android.R.id.content) == null) {
-				ArrayListFragment list = new ArrayListFragment(JSONUtil.getStringArray(result, C.channels));
-				getFragmentManager().beginTransaction().add(android.R.id.content, list).commit();
+			String[] names = new String[result.size()];
+			for (int i = 0; i < result.size(); i++) {
+				names[i] = result.get(i).getName();
 			}
+			ChannelListActivity.this.setListAdapter(new ChannelItemAdapter(ChannelListActivity.this, names, result));
 		}
+	}
+
+	public class ChannelItemAdapter extends ArrayAdapter<String> {
+		private final Context context;
+		private final List<ChannelInfo> channels;
+
+		public ChannelItemAdapter(Context context, String[] names, List<ChannelInfo> channels) {
+			super(context, R.layout.channelfragment, names);
+			this.channels = channels;
+			this.context = context;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater.inflate(R.layout.channelfragment, parent, false);
+			TextView textView = (TextView) rowView.findViewById(R.id.label);
+			ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+			textView.setText(channels.get(position).getName());
+
+			imageView.setImageBitmap(channels.get(position).getIcon());
+
+			return rowView;
+		}
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		// string
+		Object item = getListAdapter().getItem(position);
+		Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
 	}
 
 }
