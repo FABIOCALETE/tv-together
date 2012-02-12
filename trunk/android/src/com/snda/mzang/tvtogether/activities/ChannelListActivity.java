@@ -158,10 +158,15 @@ public class ChannelListActivity extends ListActivity {
 	}
 
 	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+	}
+
+	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// string
 		Object item = getListAdapter().getItem(position);
-		Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, item + " selected", Toast.LENGTH_SHORT).show();
 	}
 
 }
