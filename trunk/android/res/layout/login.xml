@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="@string/login_name_lbl"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
     <EditText
         android:id="@+id/loginUsername"
         android:layout_width="match_parent"
@@ -27,33 +27,31 @@
         android:layout_height="wrap_content"
         android:text="@string/login_password_lbl"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
     <EditText
         android:id="@+id/loginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:singleLine="true" >
-
     </EditText>
-
-    <CheckBox
-        android:id="@+id/loginReg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/login_reg_cb" />
-
+
     <CheckBox
         android:id="@+id/loginKeepLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login_keepLogin_cb" />
-
+
+    <CheckBox
+        android:id="@+id/loginReg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_reg_cb" />
+
     <Button
         android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login_login_btn" />
-
 
 </LinearLayout>

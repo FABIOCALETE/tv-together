@@ -5,7 +5,16 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 
-public abstract class WaitingDialogAsyncTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
+/**
+ * 
+ * @author Mark Zang
+ * 
+ * @param <Params>
+ *            传递给worker的参数，worker在非ui线程里工作
+ * @param <Result>
+ *            worker的返回值
+ */
+public abstract class WaitingDialogAsyncTask<Params, Result> extends AsyncTask<Params, Integer, Result> {
 
 	private ProgressDialog waitingDialog;
 
