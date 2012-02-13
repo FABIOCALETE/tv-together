@@ -9,6 +9,7 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
 public class ChannelListActivity extends ListActivity {
 
-	Map<String, Bitmap> map = new WeakHashMap<String, Bitmap>();
+	Map<String, Bitmap> bitmapCache = new WeakHashMap<String, Bitmap>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -96,8 +97,13 @@ public class ChannelListActivity extends ListActivity {
 			ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 			textView.setText(names[position]);
 
-			imageView.setImageBitmap(map.get(names[position]));
-
+			String iconFile = C.CHANNEL_RES_LOCAL_DIR + names[position];
+			Bitmap icon = bitmapCache.get(iconFile);
+			if (icon == null) {
+				icon = BitmapFactory.decodeFile(iconFile);
+				bitmapCache.put(iconFile, icon);
+			}
+			imageView.setImageBitmap(icon);
 			return rowView;
 		}
 	}
