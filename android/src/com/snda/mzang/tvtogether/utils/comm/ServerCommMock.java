@@ -225,7 +225,7 @@ public class ServerCommMock implements IServerComm {
 			JSONObject ret = new JSONObject();
 			try {
 
-				String[] channelNames = loadChannelInfos("com/snda/mzang/tvtogether/res/CCAV电视台.png");
+				String[] channelNames = loadChannelInfos("com/snda/mzang/tvtogether/res/吉林电视台.png");
 
 				ret.put(C.result, C.success);
 				JSONArray channels = new JSONArray();
