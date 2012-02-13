@@ -23,7 +23,6 @@ import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.MD5Helper;
 import com.snda.mzang.tvtogether.utils.UserSession;
-import com.snda.mzang.tvtogether.utils.db.DBUtil;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
 public class LoginActivity extends Activity {
@@ -43,8 +42,6 @@ public class LoginActivity extends Activity {
 		final CheckBox regNewUser = (CheckBox) this.findViewById(R.id.loginReg);
 
 		final CheckBox keepLogin = (CheckBox) this.findViewById(R.id.loginKeepLogin);
-
-		DBUtil.initDB(this);
 
 		final UserInfo userInfo = loadUserInfoFromDB();
 
@@ -108,7 +105,7 @@ public class LoginActivity extends Activity {
 
 	}
 
-	class LoginTask extends WaitingDialogAsyncTask<JSONObject, Integer, JSONObject> {
+	class LoginTask extends WaitingDialogAsyncTask<JSONObject, JSONObject> {
 
 		public LoginTask(Context context, String waitingMsg) {
 			super(context, waitingMsg);

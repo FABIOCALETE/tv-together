@@ -1,6 +1,10 @@
 package com.snda.mzang.tvtogether.utils;
 
+import org.json.JSONObject;
+
+import com.snda.mzang.tvtogether.utils.comm.IContentConverter;
 import com.snda.mzang.tvtogether.utils.comm.IServerComm;
+import com.snda.mzang.tvtogether.utils.comm.JSONConverter;
 import com.snda.mzang.tvtogether.utils.comm.ServerCommMock;
 
 public interface C {
@@ -31,7 +35,20 @@ public interface C {
 	String keepLogin = "keepLogin";
 	String regNewUser = "regNewUser";
 
+	// 获取频道列表时，channel节点在json中的名字
 	String channels = "channels";
+
+	// 获得server resource的时，资源的路径名
+	String resPathOnServ = "resPathOnServ";
+
+	/**
+	 * server hanlder的名字
+	 */
+	String loginHandler = "loginHandler";
+	String getChannelListHandler = "getChannelListHandler";
+	String getServerResource = "getServerResource";
+
+	IContentConverter<JSONObject> jsonc = JSONConverter.JSON;
 
 	/**
 	 * 数据库相关
@@ -46,5 +63,8 @@ public interface C {
 	/**
 	 * 文件相关
 	 */
-	String CHANNEL_RES_DIR = "/sdcard/tvtogether/channelres/";
+	String sdroot = "/sdcard/";
+	String CHANNEL_RES_DIR = "tvtogether/channelres/";
+	String CHANNEL_RES_LOCAL_DIR = sdroot + CHANNEL_RES_DIR;
+
 }

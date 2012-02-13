@@ -24,7 +24,8 @@ public class ServerCommSocket implements IServerComm {
 		address = InetSocketAddress.createUnresolved(serviceIp, serverPort);
 	}
 
-	public JSONObject sendMsg(JSONObject msg) {
+	public <T> T sendMsg(JSONObject msg, IContentConverter<T> converter) {
+
 		if (msg == null) {
 			throw new InvalidatedClientDataException("Message is null");
 		}
@@ -44,16 +45,19 @@ public class ServerCommSocket implements IServerComm {
 			socket.connect(address);
 			out = new PrintWriter(socket.getOutputStream());
 			out.write(msg.toString());
+			// FIXME: read data from server as byte[], not plain text
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			StringBuilder content = new StringBuilder();
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				content.append(line);
 			}
-			return new JSONObject(content.toString());
+			return converter.convert(content.toString().getBytes());
 		} catch (IOException e) {
 			throw new CommunicationException(e);
 		} catch (JSONException e) {
+			throw new InvalidatedServerDataException(e);
+		} catch (Exception e) {
 			throw new InvalidatedServerDataException(e);
 		} finally {
 
@@ -80,6 +84,12 @@ public class ServerCommSocket implements IServerComm {
 			}
 
 		}
+	}
+
+	public JSONObject sendMsg(JSONObject msg) {
+
+		return sendMsg(msg, C.jsonc);
 
 	}
+
 }
