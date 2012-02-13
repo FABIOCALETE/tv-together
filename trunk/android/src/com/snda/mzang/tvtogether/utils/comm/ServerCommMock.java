@@ -12,7 +12,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -69,7 +68,7 @@ public class ServerCommMock implements IServerComm {
 			}
 			try {
 				// mock waiting :)
-				Thread.sleep(3000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 			}
 			byte[] serverContent = handler.handle(msg);
@@ -139,7 +138,7 @@ public class ServerCommMock implements IServerComm {
 
 	}
 
-	private static Map<String, byte[]> cache = new WeakHashMap<String, byte[]>();
+	private static Map<String, byte[]> cache = new HashMap<String, byte[]>();
 
 	private static String[] channelNames = null;
 

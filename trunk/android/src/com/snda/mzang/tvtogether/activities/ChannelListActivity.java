@@ -1,5 +1,6 @@
 package com.snda.mzang.tvtogether.activities;
 
+import java.io.File;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -97,11 +98,14 @@ public class ChannelListActivity extends ListActivity {
 			ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 			textView.setText(names[position]);
 
-			String iconFile = C.CHANNEL_RES_LOCAL_DIR + names[position];
-			Bitmap icon = bitmapCache.get(iconFile);
+			String iconFileStr = C.CHANNEL_RES_LOCAL_DIR + names[position];
+			Bitmap icon = bitmapCache.get(iconFileStr);
 			if (icon == null) {
-				icon = BitmapFactory.decodeFile(iconFile);
-				bitmapCache.put(iconFile, icon);
+				File iconFile = new File(iconFileStr);
+				if (iconFile.isFile()) {
+					icon = BitmapFactory.decodeFile(iconFileStr);
+					bitmapCache.put(iconFileStr, icon);
+				}
 			}
 			imageView.setImageBitmap(icon);
 			return rowView;
