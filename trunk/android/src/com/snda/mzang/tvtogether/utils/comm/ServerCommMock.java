@@ -143,7 +143,7 @@ public class ServerCommMock implements IServerComm {
 
 	private static String[] channelNames = null;
 
-	private static String[] loadChannelInfos(String onRes) {
+	private static String[] loadChannelInfos(String oneRes) {
 		if (channelNames != null) {
 			return channelNames;
 		}
@@ -156,7 +156,6 @@ public class ServerCommMock implements IServerComm {
 				dir.mkdirs();
 			}
 
-			String oneRes = "com/snda/mzang/tvtogether/res/CCAV电视台.png";
 			URL url = GetChannelListHandlerMockup.class.getClassLoader().getResource(oneRes);
 
 			String path = url.getPath();
