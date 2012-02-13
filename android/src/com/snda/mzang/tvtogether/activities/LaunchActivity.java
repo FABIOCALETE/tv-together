@@ -8,8 +8,10 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.snda.mzang.tvtogether.R;
 import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.db.DBUtil;
@@ -20,6 +22,7 @@ public class LaunchActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.setContentView(R.layout.launch);
 		LaunchTvTogetherTask initTask = new LaunchTvTogetherTask(null, "");
 		initTask.execute(new Object());
 	}
@@ -42,6 +45,12 @@ public class LaunchActivity extends Activity {
 
 		@Override
 		protected void postProcess(Object result) {
+			Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+			// Bundle bundle = new Bundle();
+			// bundle.putString("demoMsg", msg);
+			// intent.putExtras(bundle);
+			startActivity(intent);
+			LaunchActivity.this.finish();
 
 		}
 
