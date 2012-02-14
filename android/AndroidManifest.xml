@@ -33,7 +33,7 @@
             android:name=".activities.TextDemoActivity" >
         </activity>
         <activity
-            android:label="@string/channel_channelList_lbl"
+            android:label="@string/channel_channelList_title"
             android:name=".activities.ChannelListActivity" >
         </activity>
     </application>

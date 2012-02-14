@@ -41,10 +41,13 @@ public abstract class WaitingDialogAsyncTask<Params, Result> extends AsyncTask<P
 
 	@Override
 	protected Result doInBackground(final Params... params) {
+		Params first = null;
 		if (params.length == 0 || params[0] == null) {
-			return null;
+			first = null;
+		} else {
+			first = params[0];
 		}
-		final Params data = params[0];
+		final Params data = first;
 
 		if (uiHandler != null && context != null && showWaitingDialog == true) {
 			showWaitingDialog = true;
