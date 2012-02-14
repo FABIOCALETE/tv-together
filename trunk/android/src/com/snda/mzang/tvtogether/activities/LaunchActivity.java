@@ -1,9 +1,5 @@
 package com.snda.mzang.tvtogether.activities;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -15,6 +11,7 @@ import com.snda.mzang.tvtogether.R;
 import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.db.DBUtil;
+import com.snda.mzang.tvtogether.utils.res.ResUtil;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
 public class LaunchActivity extends Activity {
@@ -69,18 +66,9 @@ public class LaunchActivity extends Activity {
 			String[] channelNames = JSONUtil.getStringArray(ret, C.channels);
 
 			for (String channelName : channelNames) {
-				JSONObject reqServerRes = new JSONObject();
-				reqServerRes.put(C.handler, C.getServerResource);
-				reqServerRes.put(C.resPathOnServ, C.CHANNEL_RES_DIR + channelName);
-				byte[] content = C.comm.sendMsg(reqServerRes, null);
-				File resFile = new File(C.sdroot + C.CHANNEL_RES_DIR + channelName);
-				if (resFile.isFile() == false) {
-					resFile.createNewFile();
-				}
-				OutputStream out = new FileOutputStream(resFile);
-				out.write(content);
-				out.flush();
-				out.close();
+
+				ResUtil.getResAs(C.CHANNEL_RES_DIR + channelName, null, false);
+
 			}
 		} catch (Exception ex) {
 			return;
