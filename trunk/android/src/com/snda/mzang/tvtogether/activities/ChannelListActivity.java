@@ -6,9 +6,12 @@ import java.util.WeakHashMap;
 
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -39,15 +42,16 @@ public class ChannelListActivity extends ListActivity {
 		// list.addView(title, ltp);
 		// this.setContentView(list);
 		// buildChannelList();
-		this.setTitle("频道列表");
+		this.setTitle(R.string.channel_channelList_title);
 
 		buildChannelList();
 
 	}
 
 	public void buildChannelList() {
-		LoadChannelListTask task = new LoadChannelListTask(this, "正在载入电视频道...");
-		task.execute("com/snda/mzang/tvtogether/res/CCAV电视台.png");
+
+		LoadChannelListTask task = new LoadChannelListTask(this, getText(R.string.channel_loading_msg).toString());
+		task.execute((String) null);
 	}
 
 	class LoadChannelListTask extends WaitingDialogAsyncTask<String, String[]> {
@@ -114,7 +118,17 @@ public class ChannelListActivity extends ListActivity {
 
 	@Override
 	public void onBackPressed() {
-		super.onBackPressed();
+
+		Dialog dialog = new AlertDialog.Builder(this).setIcon(R.drawable.ic_launcher).setTitle(R.string.channel_exit_title).setMessage(R.string.channel_exit_msg)
+				.setPositiveButton(R.string.channel_exit, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						ChannelListActivity.this.finish();
+					}
+				}).setNeutralButton(R.string.channel_not_exit, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+					}
+				}).create();
+		dialog.show();
 	}
 
 	@Override
