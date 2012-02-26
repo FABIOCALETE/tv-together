@@ -12,10 +12,13 @@ import org.jboss.netty.channel.SimpleChannelHandler;
 
 import com.snda.mzang.tvtogether.mockupserver.CommPackage;
 import com.snda.mzang.tvtogether.mockupserver.CommPackageProcessor;
+import com.snda.mzang.tvtogether.mockupserver.SC;
 
 public class RequestHandler extends SimpleChannelHandler {
 
 	public static final RequestHandler INSTANCE = new RequestHandler();
+
+	private CommPackageProcessor commPackageProcessor = new CommPackageProcessor();
 
 	private RequestHandler() {
 
@@ -27,19 +30,27 @@ public class RequestHandler extends SimpleChannelHandler {
 		CommPackage msg = (CommPackage) e.getMessage();
 		System.out.println("Message Recieved:" + msg);
 
-		byte[] ret = CommPackageProcessor.process(msg);
+		byte[] ret = commPackageProcessor.process(msg);
 
-		ChannelBuffer buff = ChannelBuffers.copiedBuffer(ret);
+		ChannelBuffer buff = ChannelBuffers.buffer(ret.length + SC.lenStr);
+		buff.writeInt(ret.length);
+		buff.writeBytes(ret);
 
-		ChannelFuture future = channel.write(buff);
+		try {
+			ChannelFuture future = channel.write(buff);
 
-		future.addListener(new ChannelFutureListener() {
+			future.addListener(new ChannelFutureListener() {
 
-			public void operationComplete(ChannelFuture future) throws Exception {
-				future.getChannel().close();
-			}
+				public void operationComplete(ChannelFuture future) throws Exception {
+					future.getChannel().close();
+				}
 
-		});
+			});
+
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+
 		super.messageReceived(ctx, e);
 	}
 
