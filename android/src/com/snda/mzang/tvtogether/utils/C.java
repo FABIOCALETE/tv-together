@@ -2,12 +2,13 @@ package com.snda.mzang.tvtogether.utils;
 
 import org.json.JSONObject;
 
+import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.utils.comm.IContentConverter;
 import com.snda.mzang.tvtogether.utils.comm.IServerComm;
 import com.snda.mzang.tvtogether.utils.comm.JSONConverter;
 import com.snda.mzang.tvtogether.utils.comm.ServerCommSocket;
 
-public interface C {
+public interface C extends B {
 
 	/**
 	 * UI相关
@@ -24,47 +25,14 @@ public interface C {
 	 * 通讯相关
 	 * 
 	 */
-	IServerComm comm = new ServerCommSocket("127.0.0.1", 17171);
-
-	String result = "result";
-	String success = "success";
-	String fail = "fail";
-	String handler = "handler";
-	String username = "username";
-	String password = "password";
-	String keepLogin = "keepLogin";
-	String regNewUser = "regNewUser";
-
-	// 获取频道列表时，channel节点在json中的名字
-	String channels = "channels";
-
-	// 获得server resource的时，资源的路径名
-	String resPathOnServ = "resPathOnServ";
-
-	/**
-	 * server hanlder的名字
-	 */
-	String loginHandler = "loginHandler";
-	String getChannelListHandler = "getChannelListHandler";
-	String getServerResource = "getServerResource";
+	IServerComm comm = new ServerCommSocket("10.0.2.2", 17171);
 
 	IContentConverter<JSONObject> jsonc = JSONConverter.JSON;
-
-	/**
-	 * 数据库相关
-	 */
-	String DB_NAME = "TVTogetherDB";
-
-	String TB_USER = "UserInfo";
-
-	String col_username = "username";
-	String col_password = "password";
 
 	/**
 	 * 文件相关
 	 */
 	String sdroot = "/sdcard/";
-	String CHANNEL_RES_DIR = "tvtogether/channelres/";
 	String CHANNEL_RES_LOCAL_DIR = sdroot + CHANNEL_RES_DIR;
 
 }

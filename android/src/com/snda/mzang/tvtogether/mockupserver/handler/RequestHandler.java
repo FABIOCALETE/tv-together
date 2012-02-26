@@ -10,9 +10,9 @@ import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
 
+import com.snda.mzang.tvtogether.base.SC;
 import com.snda.mzang.tvtogether.mockupserver.CommPackage;
 import com.snda.mzang.tvtogether.mockupserver.CommPackageProcessor;
-import com.snda.mzang.tvtogether.mockupserver.SC;
 
 public class RequestHandler extends SimpleChannelHandler {
 
