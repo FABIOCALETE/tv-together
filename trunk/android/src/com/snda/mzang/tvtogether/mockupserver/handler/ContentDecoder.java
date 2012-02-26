@@ -19,13 +19,12 @@ public class ContentDecoder extends FrameDecoder {
 			return null;
 		}
 
-		int len = getLength(buffer);
+		int len = buffer.getInt(buffer.readerIndex());
 
-		String type = getType(buffer);
-
-		if (avaliable >= len + SC.lenHeader) {
-			buffer.readerIndex(SC.lenHeader);
-			byte[] currContent = new byte[len - SC.lenHeader];
+		if (avaliable >= len + SC.lenStr) {
+			String type = readType(buffer);
+			buffer.readerIndex(SC.lenStr);
+			byte[] currContent = new byte[len - SC.lenType];
 			buffer.readBytes(currContent);
 			CommPackage commPackage = new CommPackage();
 			commPackage.type = type;
@@ -36,17 +35,9 @@ public class ContentDecoder extends FrameDecoder {
 		}
 	}
 
-	private static int getLength(ChannelBuffer buffer) {
-		byte[] lenBytes = new byte[SC.lenStr];
-		buffer.getBytes(0, lenBytes);
-		String lenStrc = new String(lenBytes);
-		return Integer.valueOf(lenStrc.trim());
-	}
-
-	private static String getType(ChannelBuffer buffer) {
-		byte[] typeBytes = new byte[SC.lenType];
-		buffer.getBytes(SC.lenStr, typeBytes);
-		String typeStr = new String(typeBytes);
+	private static String readType(ChannelBuffer buffer) {
+		ChannelBuffer typeBytes = buffer.readBytes(SC.lenType);
+		String typeStr = new String(typeBytes.array());
 		return typeStr.trim().toLowerCase();
 
 	}

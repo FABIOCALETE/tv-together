@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import com.snda.mzang.tvtogether.utils.comm.IContentConverter;
 import com.snda.mzang.tvtogether.utils.comm.IServerComm;
 import com.snda.mzang.tvtogether.utils.comm.JSONConverter;
-import com.snda.mzang.tvtogether.utils.comm.ServerCommMock;
+import com.snda.mzang.tvtogether.utils.comm.ServerCommSocket;
 
 public interface C {
 
@@ -24,7 +24,7 @@ public interface C {
 	 * 通讯相关
 	 * 
 	 */
-	IServerComm comm = new ServerCommMock();
+	IServerComm comm = new ServerCommSocket("127.0.0.1", 17171);
 
 	String result = "result";
 	String success = "success";
