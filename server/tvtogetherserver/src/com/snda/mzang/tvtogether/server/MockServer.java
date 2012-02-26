@@ -1,4 +1,4 @@
-package com.snda.mzang.tvtogether.mockupserver;
+package com.snda.mzang.tvtogether.server;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
@@ -10,8 +10,8 @@ import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 
-import com.snda.mzang.tvtogether.mockupserver.handler.ContentDecoder;
-import com.snda.mzang.tvtogether.mockupserver.handler.RequestHandler;
+import com.snda.mzang.tvtogether.server.handler.ContentDecoder;
+import com.snda.mzang.tvtogether.server.handler.RequestHandler;
 
 public class MockServer {
 

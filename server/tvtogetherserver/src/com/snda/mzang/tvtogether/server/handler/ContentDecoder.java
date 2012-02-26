@@ -1,4 +1,4 @@
-package com.snda.mzang.tvtogether.mockupserver.handler;
+package com.snda.mzang.tvtogether.server.handler;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
@@ -7,7 +7,7 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.json.JSONObject;
 
 import com.snda.mzang.tvtogether.base.B;
-import com.snda.mzang.tvtogether.mockupserver.CommPackage;
+import com.snda.mzang.tvtogether.server.CommPackage;
 
 public class ContentDecoder extends FrameDecoder {
 
