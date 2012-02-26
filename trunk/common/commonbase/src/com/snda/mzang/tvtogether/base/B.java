@@ -15,10 +15,13 @@ public interface B {
 	String keepLogin = "keepLogin";
 	String regNewUser = "regNewUser";
 
-	int lenStr = 4;
-	int lenType = 27;
+	// 消息长度，四个字节一个int
+	int MSG_INT_LEN = 4;
+	// 客户端给服务器端发送的handler名字，27个字节长度的字符
+	int MSG_HANDLER_NAME_LEN = 27;
 
-	int lenHeader = lenStr + lenType;
+	// 对服务器来说，msg header就是这两个的和，对于客户端来说，就是MSG_INT_LEN
+	int MSG_CLIENT_HEADER_LEN = MSG_INT_LEN + MSG_HANDLER_NAME_LEN;
 
 	// 获取频道列表时，channel节点在json中的名字
 	String channels = "channels";
