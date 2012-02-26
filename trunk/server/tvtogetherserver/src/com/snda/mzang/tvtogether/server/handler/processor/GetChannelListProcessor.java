@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.server.CommPackageProcessor;
+import com.snda.mzang.tvtogether.server.IMessageProcessor;
 
 public class GetChannelListProcessor implements IMessageProcessor {
 

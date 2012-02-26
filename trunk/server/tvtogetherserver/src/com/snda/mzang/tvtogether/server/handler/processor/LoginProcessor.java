@@ -4,6 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.snda.mzang.tvtogether.base.B;
+import com.snda.mzang.tvtogether.server.IMessageProcessor;
+import com.snda.mzang.tvtogether.server.IValidationProcessor;
 
 public class LoginProcessor implements IMessageProcessor, IValidationProcessor {
 
