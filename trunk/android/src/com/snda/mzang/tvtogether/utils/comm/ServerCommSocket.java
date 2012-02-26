@@ -11,10 +11,10 @@ import java.net.UnknownHostException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.snda.mzang.tvtogether.base.SC;
 import com.snda.mzang.tvtogether.exceptions.CommunicationException;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedClientDataException;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedServerDataException;
-import com.snda.mzang.tvtogether.mockupserver.SC;
 import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.UserSession;
