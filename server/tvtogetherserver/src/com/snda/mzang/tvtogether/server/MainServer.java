@@ -13,7 +13,7 @@ import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import com.snda.mzang.tvtogether.server.handler.ContentDecoder;
 import com.snda.mzang.tvtogether.server.handler.RequestHandler;
 
-public class MockServer {
+public class MainServer {
 
 	public static void main(String[] args) {
 		start();
