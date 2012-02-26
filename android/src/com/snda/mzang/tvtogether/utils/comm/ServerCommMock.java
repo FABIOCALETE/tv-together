@@ -19,10 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedClientDataException;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedServerDataException;
 import com.snda.mzang.tvtogether.utils.C;
-import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.UserSession;
 
 public class ServerCommMock implements IServerComm {

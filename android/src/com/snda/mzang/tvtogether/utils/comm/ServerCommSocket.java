@@ -11,12 +11,12 @@ import java.net.UnknownHostException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.snda.mzang.tvtogether.base.SC;
+import com.snda.mzang.tvtogether.base.B;
+import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.exceptions.CommunicationException;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedClientDataException;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedServerDataException;
 import com.snda.mzang.tvtogether.utils.C;
-import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.UserSession;
 
 public class ServerCommSocket implements IServerComm {
@@ -28,7 +28,6 @@ public class ServerCommSocket implements IServerComm {
 		try {
 			addressHost = InetAddress.getByName(serviceIp);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		address = new InetSocketAddress(addressHost, serverPort);
@@ -61,7 +60,7 @@ public class ServerCommSocket implements IServerComm {
 			out.flush();
 			in = new DataInputStream(socket.getInputStream());
 
-			while (in.available() < SC.lenHeader) {
+			while (in.available() < B.lenHeader) {
 				Thread.sleep(10);
 			}
 			int len = in.readInt();
@@ -110,7 +109,7 @@ public class ServerCommSocket implements IServerComm {
 
 	private static byte[] getClientPkg(JSONObject msg) {
 		StringBuilder handler = new StringBuilder(JSONUtil.getString(msg, C.handler));
-		while (handler.length() < SC.lenType) {
+		while (handler.length() < B.lenType) {
 			handler.append(' ');
 		}
 		handler.append(msg.toString());
