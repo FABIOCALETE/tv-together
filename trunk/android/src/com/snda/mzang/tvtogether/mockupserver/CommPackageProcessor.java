@@ -41,7 +41,7 @@ public class CommPackageProcessor {
 
 	}
 
-	public static byte[] process(CommPackage commPkg) {
+	public byte[] process(CommPackage commPkg) {
 
 		if (commPkg == null) {
 			throw new InvalidatedClientDataException("Message is null");
@@ -63,25 +63,12 @@ public class CommPackageProcessor {
 				}
 			}
 			byte[] serverContent = handler.handle(commPkg.data);
-			return pkData(serverContent);
+			return serverContent;
 
 		} catch (Exception e) {
 			throw new InvalidatedServerDataException(e);
 		}
 
-	}
-
-	private static byte[] pkData(byte[] serverContent) {
-		byte[] retData = new byte[serverContent.length + SC.lenStr];
-		System.arraycopy(serverContent, 0, retData, SC.lenStr, serverContent.length);
-
-		byte[] lenStrBytes = String.valueOf(serverContent.length).getBytes();
-		System.arraycopy(lenStrBytes, 0, retData, 0, lenStrBytes.length);
-
-		for (int i = lenStrBytes.length; i < SC.lenStr; i++) {
-			retData[i] = ' ';
-		}
-		return retData;
 	}
 
 	private static boolean doLoginValidation(String userName, String password) {
@@ -232,7 +219,7 @@ public class CommPackageProcessor {
 			JSONObject ret = new JSONObject();
 			try {
 
-				String[] channelNames = loadChannelInfos("com/snda/mzang/tvtogether/res/吉林电视台.png");
+				String[] channelNames = loadChannelInfos("com/snda/mzang/tvtogether/res/福建东南台.png");
 
 				ret.put(C.result, C.success);
 				JSONArray channels = new JSONArray();
