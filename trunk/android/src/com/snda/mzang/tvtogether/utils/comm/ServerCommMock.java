@@ -45,7 +45,6 @@ public class ServerCommMock implements IServerComm {
 		return sendMsg(msg, C.jsonc);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T sendMsg(JSONObject msg, IContentConverter<T> converter) {
 		if (msg == null) {
 			throw new InvalidatedClientDataException("Message is null");
@@ -59,9 +58,21 @@ public class ServerCommMock implements IServerComm {
 		} catch (JSONException e1) {
 			throw new InvalidatedClientDataException();
 		}
+		String handlerName = null;
+		try {
+			handlerName = (String) msg.get(C.handler);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return sendMsg(handlerName, msg.toString().getBytes(), converter);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T sendMsg(String handlerName, byte[] message, IContentConverter<T> converter) {
 
 		try {
-			String handlerName = (String) msg.get(C.handler);
 			IMessageHandler handler = handlers.get(handlerName);
 			if (handler == null) {
 				throw new InvalidatedServerDataException("No handler found for name \"" + handlerName + "\"");
@@ -71,7 +82,7 @@ public class ServerCommMock implements IServerComm {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 			}
-			byte[] serverContent = handler.handle(msg);
+			byte[] serverContent = handler.handle(message);
 			if (converter == null) {
 				return (T) serverContent;
 			}
@@ -81,18 +92,33 @@ public class ServerCommMock implements IServerComm {
 		} catch (Exception e) {
 			throw new InvalidatedServerDataException(e);
 		}
-
 	}
 
 	interface IMessageHandler {
 
 		String getHandlerName();
 
-		byte[] handle(JSONObject data);
+		byte[] handle(byte[] message);
 
 	}
 
-	class LoginHandlerMockup implements IMessageHandler {
+	abstract class BaseJSONMessageHandler implements IMessageHandler {
+		public byte[] handle(byte[] message) {
+			String jsonStr = new String(message);
+			JSONObject json = null;
+			try {
+				json = new JSONObject(jsonStr);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return handle(json);
+		}
+
+		public abstract byte[] handle(JSONObject message);
+	}
+
+	class LoginHandlerMockup extends BaseJSONMessageHandler {
 
 		public String getHandlerName() {
 			return C.loginHandler;
@@ -106,34 +132,6 @@ public class ServerCommMock implements IServerComm {
 				e.printStackTrace();
 			}
 			return ret.toString().getBytes();
-		}
-
-	}
-
-	static class RawChannel {
-
-		public RawChannel(String name, byte[] icon) {
-			this.name = name;
-			this.icon = icon;
-		}
-
-		String name;
-		byte[] icon;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public byte[] getIcon() {
-			return icon;
-		}
-
-		public void setIcon(byte[] icon) {
-			this.icon = icon;
 		}
 
 	}
@@ -213,7 +211,7 @@ public class ServerCommMock implements IServerComm {
 		}
 	}
 
-	class GetChannelListHandlerMockup implements IMessageHandler {
+	class GetChannelListHandlerMockup extends BaseJSONMessageHandler {
 
 		public String getHandlerName() {
 			return C.getChannelListHandler;
@@ -238,7 +236,7 @@ public class ServerCommMock implements IServerComm {
 		}
 	}
 
-	class GetServerResourceMockup implements IMessageHandler {
+	class GetServerResourceMockup extends BaseJSONMessageHandler {
 
 		public String getHandlerName() {
 			return C.getServerResource;
@@ -249,4 +247,5 @@ public class ServerCommMock implements IServerComm {
 			return cache.get(C.sdroot + resourceName);
 		}
 	}
+
 }

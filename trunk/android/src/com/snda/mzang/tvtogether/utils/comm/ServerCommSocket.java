@@ -33,7 +33,6 @@ public class ServerCommSocket implements IServerComm {
 		address = new InetSocketAddress(addressHost, serverPort);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T sendMsg(JSONObject msg, IContentConverter<T> converter) {
 
 		if (msg == null) {
@@ -48,15 +47,24 @@ public class ServerCommSocket implements IServerComm {
 		} catch (JSONException e1) {
 			throw new InvalidatedClientDataException();
 		}
+
+		String handlerName = JSONUtil.getString(msg, B.handler);
+		byte[] msgData = getClientPkg(msg);
+
+		return this.sendMsg(handlerName, msgData, converter);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T sendMsg(String handlerName, byte[] message, IContentConverter<T> converter) {
 		Socket socket = new Socket();
 		DataOutputStream out = null;
 		DataInputStream in = null;
 		try {
 			socket.connect(address);
 			out = new DataOutputStream(socket.getOutputStream());
-			byte[] msgData = getClientPkg(msg);
-			out.writeInt(msgData.length);
-			out.write(msgData);
+			out.writeInt(message.length);
+			out.write(message);
 			out.flush();
 			in = new DataInputStream(socket.getInputStream());
 
