@@ -1,9 +1,8 @@
 package com.snda.mzang.tvtogether.utils.comm;
 
-import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -13,7 +12,9 @@ import org.json.JSONObject;
 import com.snda.mzang.tvtogether.exceptions.CommunicationException;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedClientDataException;
 import com.snda.mzang.tvtogether.exceptions.InvalidatedServerDataException;
+import com.snda.mzang.tvtogether.mockupserver.SC;
 import com.snda.mzang.tvtogether.utils.C;
+import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.UserSession;
 
 public class ServerCommSocket implements IServerComm {
@@ -24,6 +25,7 @@ public class ServerCommSocket implements IServerComm {
 		address = InetSocketAddress.createUnresolved(serviceIp, serverPort);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T sendMsg(JSONObject msg, IContentConverter<T> converter) {
 
 		if (msg == null) {
@@ -39,20 +41,31 @@ public class ServerCommSocket implements IServerComm {
 			throw new InvalidatedClientDataException();
 		}
 		Socket socket = new Socket();
-		PrintWriter out = null;
-		BufferedReader reader = null;
+		DataOutputStream out = null;
+		DataInputStream in = null;
 		try {
 			socket.connect(address);
-			out = new PrintWriter(socket.getOutputStream());
-			out.write(msg.toString());
-			// FIXME: read data from server as byte[], not plain text
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			StringBuilder content = new StringBuilder();
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				content.append(line);
+			out = new DataOutputStream(socket.getOutputStream());
+			byte[] msgData = getClientPkg(msg);
+			out.writeInt(msgData.length);
+			out.write(msgData);
+			out.flush();
+			in = new DataInputStream(socket.getInputStream());
+
+			while (in.available() < SC.lenHeader) {
+				Thread.sleep(10);
 			}
-			return converter.convert(content.toString().getBytes());
+			int len = in.readInt();
+
+			byte[] retData = new byte[len];
+
+			in.read(retData);
+
+			if (converter == null) {
+				return (T) retData;
+			}
+
+			return converter.convert(retData);
 		} catch (IOException e) {
 			throw new CommunicationException(e);
 		} catch (JSONException e) {
@@ -76,14 +89,24 @@ public class ServerCommSocket implements IServerComm {
 				}
 			}
 
-			if (reader != null) {
+			if (in != null) {
 				try {
-					reader.close();
+					in.close();
 				} catch (IOException e) {
 				}
 			}
 
 		}
+	}
+
+	private static byte[] getClientPkg(JSONObject msg) {
+		StringBuilder handler = new StringBuilder(JSONUtil.getString(msg, C.handler));
+		while (handler.length() < SC.lenType) {
+			handler.append(' ');
+		}
+		handler.append(msg.toString());
+		byte[] msgData = handler.toString().getBytes();
+		return msgData;
 	}
 
 	public JSONObject sendMsg(JSONObject msg) {
