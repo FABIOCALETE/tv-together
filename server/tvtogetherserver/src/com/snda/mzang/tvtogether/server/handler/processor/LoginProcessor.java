@@ -5,9 +5,9 @@ import org.json.JSONObject;
 
 import com.snda.mzang.tvtogether.base.B;
 
-public class LoginHandlerMockup implements IMessageHandler, IValidationHandler {
+public class LoginProcessor implements IMessageProcessor, IValidationProcessor {
 
-	public String getHandlerName() {
+	public String getProcessorName() {
 		return B.loginHandler;
 	}
 

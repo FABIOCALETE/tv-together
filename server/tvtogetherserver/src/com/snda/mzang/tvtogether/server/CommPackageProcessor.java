@@ -15,25 +15,25 @@ import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.exception.InvalidatedServerDataException;
 import com.snda.mzang.tvtogether.exception.L;
-import com.snda.mzang.tvtogether.server.handler.processor.GetChannelListHandlerMockup;
-import com.snda.mzang.tvtogether.server.handler.processor.GetServerResourceMockup;
-import com.snda.mzang.tvtogether.server.handler.processor.IMessageHandler;
-import com.snda.mzang.tvtogether.server.handler.processor.IValidationHandler;
-import com.snda.mzang.tvtogether.server.handler.processor.LoginHandlerMockup;
+import com.snda.mzang.tvtogether.server.handler.processor.GetChannelListProcessor;
+import com.snda.mzang.tvtogether.server.handler.processor.GetServerResource;
+import com.snda.mzang.tvtogether.server.handler.processor.IMessageProcessor;
+import com.snda.mzang.tvtogether.server.handler.processor.IValidationProcessor;
+import com.snda.mzang.tvtogether.server.handler.processor.LoginProcessor;
 
 public class CommPackageProcessor {
 
-	private static Map<String, IMessageHandler> processors = new HashMap<String, IMessageHandler>();
+	private static Map<String, IMessageProcessor> processors = new HashMap<String, IMessageProcessor>();
 
 	public CommPackageProcessor() {
-		IMessageHandler handler = new LoginHandlerMockup();
-		processors.put(handler.getHandlerName().toLowerCase(), handler);
+		IMessageProcessor handler = new LoginProcessor();
+		processors.put(handler.getProcessorName().toLowerCase(), handler);
 
-		handler = new GetChannelListHandlerMockup();
-		processors.put(handler.getHandlerName().toLowerCase(), handler);
+		handler = new GetChannelListProcessor();
+		processors.put(handler.getProcessorName().toLowerCase(), handler);
 
-		handler = new GetServerResourceMockup();
-		processors.put(handler.getHandlerName().toLowerCase(), handler);
+		handler = new GetServerResource();
+		processors.put(handler.getProcessorName().toLowerCase(), handler);
 
 	}
 
@@ -49,12 +49,12 @@ public class CommPackageProcessor {
 
 		try {
 			String handlerName = commPkg.type;
-			IMessageHandler handler = processors.get(handlerName);
+			IMessageProcessor handler = processors.get(handlerName);
 			if (handler == null) {
 				throw new InvalidatedServerDataException("No handler found for name \"" + handlerName + "\"");
 			}
 
-			if (handler instanceof IValidationHandler) {
+			if (handler instanceof IValidationProcessor) {
 				if (doLoginValidation(JSONUtil.getString(commPkg.data, B.username), JSONUtil.getString(commPkg.data, B.password)) == false) {
 					return "User validation failed".getBytes();
 				}
