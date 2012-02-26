@@ -41,6 +41,7 @@ public class ResUtil {
 			byte[] content = new byte[(int) resFile.length()];
 			InputStream input = new FileInputStream(resFile);
 			input.read(content);
+			input.close();
 			return converter.convert(content);
 		}
 	}
