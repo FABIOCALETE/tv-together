@@ -10,14 +10,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.exception.InvalidatedServerDataException;
 import com.snda.mzang.tvtogether.exception.L;
+import com.snda.mzang.tvtogether.server.handler.processor.GetChannelListHandlerMockup;
+import com.snda.mzang.tvtogether.server.handler.processor.GetServerResourceMockup;
+import com.snda.mzang.tvtogether.server.handler.processor.IMessageHandler;
+import com.snda.mzang.tvtogether.server.handler.processor.IValidationHandler;
+import com.snda.mzang.tvtogether.server.handler.processor.LoginHandlerMockup;
 
 public class CommPackageProcessor {
 
@@ -72,41 +74,11 @@ public class CommPackageProcessor {
 		return true;
 	}
 
-	interface IMessageHandler {
+	public static Map<String, byte[]> cache = new HashMap<String, byte[]>();
 
-		String getHandlerName();
+	public static String[] channelNames = null;
 
-		byte[] handle(JSONObject data);
-
-	}
-
-	interface IValidationHandler {
-
-	}
-
-	class LoginHandlerMockup implements IMessageHandler, IValidationHandler {
-
-		public String getHandlerName() {
-			return B.loginHandler;
-		}
-
-		public byte[] handle(JSONObject msg) {
-			JSONObject ret = new JSONObject();
-			try {
-				ret.put(B.result, B.success);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			return ret.toString().getBytes();
-		}
-
-	}
-
-	private static Map<String, byte[]> cache = new HashMap<String, byte[]>();
-
-	private static String[] channelNames = null;
-
-	private static String[] loadChannelInfos() {
+	public static String[] loadChannelInfos() {
 		if (channelNames != null) {
 			return channelNames;
 		}
@@ -185,43 +157,6 @@ public class CommPackageProcessor {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
-		}
-	}
-
-	class GetChannelListHandlerMockup implements IMessageHandler {
-
-		public String getHandlerName() {
-			return B.getChannelListHandler;
-		}
-
-		public byte[] handle(JSONObject msg) {
-			JSONObject ret = new JSONObject();
-			try {
-
-				String[] channelNames = loadChannelInfos();
-
-				ret.put(B.result, B.success);
-				JSONArray channels = new JSONArray();
-				for (String channelName : channelNames) {
-					channels.put(channelName);
-				}
-				ret.put(B.channels, channels);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			return ret.toString().getBytes();
-		}
-	}
-
-	class GetServerResourceMockup implements IMessageHandler, IValidationHandler {
-
-		public String getHandlerName() {
-			return B.getServerResource;
-		}
-
-		public byte[] handle(JSONObject msg) {
-			String resourceName = JSONUtil.getString(msg, B.resPathOnServ);
-			return cache.get(SC.resBase + resourceName);
 		}
 	}
 
