@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.snda.mzang.tvtogether.R;
-import com.snda.mzang.tvtogether.mockupserver.MockServer;
 import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.db.DBUtil;
@@ -21,7 +20,7 @@ public class LaunchActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.launch);
-		MockServer.start();
+		// MockServer.start();
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
