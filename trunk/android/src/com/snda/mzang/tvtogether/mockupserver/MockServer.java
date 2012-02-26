@@ -11,6 +11,7 @@ import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 
 import com.snda.mzang.tvtogether.mockupserver.handler.ContentDecoder;
+import com.snda.mzang.tvtogether.mockupserver.handler.RequestHandler;
 
 public class MockServer {
 
@@ -18,7 +19,7 @@ public class MockServer {
 		start();
 	}
 
-	private static void start() {
+	public static void start() {
 		ChannelFactory channelFact = new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool());
 
 		ServerBootstrap bootstrap = new ServerBootstrap(channelFact);
@@ -26,7 +27,7 @@ public class MockServer {
 		bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
 
 			public ChannelPipeline getPipeline() throws Exception {
-				return Channels.pipeline(new ContentDecoder());
+				return Channels.pipeline(new ContentDecoder(), RequestHandler.INSTANCE);
 			}
 			// DummyChannelUpAndDownstreamHandler.INSTANCE
 		});

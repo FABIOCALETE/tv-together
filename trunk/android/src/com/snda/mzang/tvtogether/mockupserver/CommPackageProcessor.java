@@ -31,13 +31,13 @@ public class CommPackageProcessor {
 
 	public CommPackageProcessor() {
 		IMessageHandler handler = new LoginHandlerMockup();
-		processors.put(handler.getHandlerName(), handler);
+		processors.put(handler.getHandlerName().toLowerCase(), handler);
 
 		handler = new GetChannelListHandlerMockup();
-		processors.put(handler.getHandlerName(), handler);
+		processors.put(handler.getHandlerName().toLowerCase(), handler);
 
 		handler = new GetServerResourceMockup();
-		processors.put(handler.getHandlerName(), handler);
+		processors.put(handler.getHandlerName().toLowerCase(), handler);
 
 	}
 

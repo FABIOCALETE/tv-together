@@ -3,8 +3,10 @@ package com.snda.mzang.tvtogether.utils.comm;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +24,14 @@ public class ServerCommSocket implements IServerComm {
 	private InetSocketAddress address;
 
 	public ServerCommSocket(String serviceIp, int serverPort) {
-		address = InetSocketAddress.createUnresolved(serviceIp, serverPort);
+		InetAddress addressHost = null;
+		try {
+			addressHost = InetAddress.getByName(serviceIp);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		address = new InetSocketAddress(addressHost, serverPort);
 	}
 
 	@SuppressWarnings("unchecked")
