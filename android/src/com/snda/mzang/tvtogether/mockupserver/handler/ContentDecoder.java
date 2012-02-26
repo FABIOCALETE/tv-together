@@ -22,8 +22,8 @@ public class ContentDecoder extends FrameDecoder {
 		int len = buffer.getInt(buffer.readerIndex());
 
 		if (avaliable >= len + SC.lenStr) {
+			buffer.readInt();
 			String type = readType(buffer);
-			buffer.readerIndex(SC.lenStr);
 			byte[] currContent = new byte[len - SC.lenType];
 			buffer.readBytes(currContent);
 			CommPackage commPackage = new CommPackage();

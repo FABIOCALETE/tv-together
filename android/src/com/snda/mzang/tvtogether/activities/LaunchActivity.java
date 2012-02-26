@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.snda.mzang.tvtogether.R;
+import com.snda.mzang.tvtogether.mockupserver.MockServer;
 import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.db.DBUtil;
@@ -20,6 +21,13 @@ public class LaunchActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.launch);
+		MockServer.start();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		LaunchTvTogetherTask initTask = new LaunchTvTogetherTask(null, "");
 		initTask.execute(new Object());
 	}
