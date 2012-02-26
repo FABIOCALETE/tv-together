@@ -17,8 +17,6 @@ import com.snda.mzang.tvtogether.exception.InvalidatedServerDataException;
 import com.snda.mzang.tvtogether.exception.L;
 import com.snda.mzang.tvtogether.server.handler.processor.GetChannelListProcessor;
 import com.snda.mzang.tvtogether.server.handler.processor.GetServerResource;
-import com.snda.mzang.tvtogether.server.handler.processor.IMessageProcessor;
-import com.snda.mzang.tvtogether.server.handler.processor.IValidationProcessor;
 import com.snda.mzang.tvtogether.server.handler.processor.LoginProcessor;
 
 public class CommPackageProcessor {
