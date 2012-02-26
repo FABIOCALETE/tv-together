@@ -1,4 +1,4 @@
-package com.snda.mzang.tvtogether.mockupserver;
+package com.snda.mzang.tvtogether.server;
 
 import java.io.File;
 import java.io.FileInputStream;
