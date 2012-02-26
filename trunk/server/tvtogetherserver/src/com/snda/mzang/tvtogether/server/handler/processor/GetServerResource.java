@@ -7,9 +7,9 @@ import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.server.CommPackageProcessor;
 import com.snda.mzang.tvtogether.server.SC;
 
-public class GetServerResourceMockup implements IMessageHandler, IValidationHandler {
+public class GetServerResource implements IMessageProcessor, IValidationProcessor {
 
-	public String getHandlerName() {
+	public String getProcessorName() {
 		return B.getServerResource;
 	}
 

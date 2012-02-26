@@ -2,9 +2,9 @@ package com.snda.mzang.tvtogether.server.handler.processor;
 
 import org.json.JSONObject;
 
-public interface IMessageHandler {
+public interface IMessageProcessor {
 
-	String getHandlerName();
+	String getProcessorName();
 
 	byte[] handle(JSONObject data);
 

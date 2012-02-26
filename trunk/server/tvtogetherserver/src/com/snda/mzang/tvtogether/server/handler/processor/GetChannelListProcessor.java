@@ -7,9 +7,9 @@ import org.json.JSONObject;
 import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.server.CommPackageProcessor;
 
-public class GetChannelListHandlerMockup implements IMessageHandler {
+public class GetChannelListProcessor implements IMessageProcessor {
 
-	public String getHandlerName() {
+	public String getProcessorName() {
 		return B.getChannelListHandler;
 	}
 
