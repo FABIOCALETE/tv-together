@@ -60,7 +60,7 @@ public class ServerCommSocket implements IServerComm {
 			out.flush();
 			in = new DataInputStream(socket.getInputStream());
 
-			while (in.available() < B.lenHeader) {
+			while (in.available() < B.lenStr) {
 				Thread.sleep(10);
 			}
 			int len = in.readInt();
