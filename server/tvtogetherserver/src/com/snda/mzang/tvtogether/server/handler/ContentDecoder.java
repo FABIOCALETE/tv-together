@@ -15,16 +15,16 @@ public class ContentDecoder extends FrameDecoder {
 	protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
 		int avaliable = buffer.readableBytes();
 
-		if (avaliable < B.lenHeader) {
+		if (avaliable < B.MSG_CLIENT_HEADER_LEN) {
 			return null;
 		}
 
 		int len = buffer.getInt(buffer.readerIndex());
 
-		if (avaliable >= len + B.lenStr) {
+		if (avaliable >= len + B.MSG_INT_LEN) {
 			buffer.readInt();
 			String type = readType(buffer);
-			byte[] currContent = new byte[len - B.lenType];
+			byte[] currContent = new byte[len - B.MSG_HANDLER_NAME_LEN];
 			buffer.readBytes(currContent);
 			CommPackage commPackage = new CommPackage();
 			commPackage.type = type;
@@ -36,7 +36,7 @@ public class ContentDecoder extends FrameDecoder {
 	}
 
 	private static String readType(ChannelBuffer buffer) {
-		ChannelBuffer typeBytes = buffer.readBytes(B.lenType);
+		ChannelBuffer typeBytes = buffer.readBytes(B.MSG_HANDLER_NAME_LEN);
 		String typeStr = new String(typeBytes.array());
 		return typeStr.trim().toLowerCase();
 

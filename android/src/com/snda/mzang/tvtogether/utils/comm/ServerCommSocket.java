@@ -60,7 +60,7 @@ public class ServerCommSocket implements IServerComm {
 			out.flush();
 			in = new DataInputStream(socket.getInputStream());
 
-			while (in.available() < B.lenStr) {
+			while (in.available() < B.MSG_INT_LEN) {
 				Thread.sleep(10);
 			}
 			int len = in.readInt();
@@ -109,7 +109,7 @@ public class ServerCommSocket implements IServerComm {
 
 	private static byte[] getClientPkg(JSONObject msg) {
 		StringBuilder handler = new StringBuilder(JSONUtil.getString(msg, C.handler));
-		while (handler.length() < B.lenType) {
+		while (handler.length() < B.MSG_HANDLER_NAME_LEN) {
 			handler.append(' ');
 		}
 		handler.append(msg.toString());

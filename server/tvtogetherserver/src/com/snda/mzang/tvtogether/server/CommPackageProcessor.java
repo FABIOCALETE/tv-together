@@ -2,18 +2,12 @@ package com.snda.mzang.tvtogether.server;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
@@ -108,39 +102,11 @@ public class CommPackageProcessor {
 
 	}
 
-	static class RawChannel {
-
-		public RawChannel(String name, byte[] icon) {
-			this.name = name;
-			this.icon = icon;
-		}
-
-		String name;
-		byte[] icon;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public byte[] getIcon() {
-			return icon;
-		}
-
-		public void setIcon(byte[] icon) {
-			this.icon = icon;
-		}
-
-	}
-
 	private static Map<String, byte[]> cache = new HashMap<String, byte[]>();
 
 	private static String[] channelNames = null;
 
-	private static String[] loadChannelInfos(String oneRes) {
+	private static String[] loadChannelInfos() {
 		if (channelNames != null) {
 			return channelNames;
 		}
@@ -153,57 +119,68 @@ public class CommPackageProcessor {
 				dir.mkdirs();
 			}
 
-			URL url = GetChannelListHandlerMockup.class.getClassLoader().getResource(oneRes);
+			// URL url =
+			// GetChannelListHandlerMockup.class.getClassLoader().getResource(oneRes);
+			//
+			// String path = url.getPath();
+			//
+			// String jarFilePath = path.substring(path.indexOf('/'),
+			// path.indexOf('!'));
+			//
+			// List<String> resName = new ArrayList<String>();
+			//
+			// JarFile file = new JarFile(jarFilePath);
+			//
+			// Enumeration<JarEntry> ets = file.entries();
+			//
+			// String imageDir = oneRes.substring(0, oneRes.lastIndexOf('/') +
+			// 1);
+			//
+			// while (ets.hasMoreElements() == true) {
+			// JarEntry jarEntry = ets.nextElement();
+			// String jarEntryPath = jarEntry.getName();
+			// if (jarEntryPath.startsWith(imageDir) == false) {
+			// continue;
+			// }
+			// InputStream input = file.getInputStream(jarEntry);
+			// String imgFileName =
+			// jarEntryPath.substring(jarEntryPath.lastIndexOf('/') + 1,
+			// jarEntryPath.lastIndexOf('.'));
+			// resName.add(imgFileName);
+			// File dataFile = new File(dir, imgFileName);
+			// if (dataFile.exists() == false || dataFile.isFile() == false) {
+			// dataFile.createNewFile();
+			// }
+			// OutputStream os = new FileOutputStream(dataFile);
+			// byte[] buffer = new byte[1024];
+			// int len = -1;
+			// while ((len = input.read(buffer)) != -1) {
+			// os.write(buffer, 0, len);
+			// }
+			// input.close();
+			// os.close();
+			// }
 
-			String path = url.getPath();
-
-			String jarFilePath = path.substring(path.indexOf('/'), path.indexOf('!'));
-
-			List<String> resName = new ArrayList<String>();
-
-			JarFile file = new JarFile(jarFilePath);
-
-			Enumeration<JarEntry> ets = file.entries();
-
-			String imageDir = oneRes.substring(0, oneRes.lastIndexOf('/') + 1);
-
-			while (ets.hasMoreElements() == true) {
-				JarEntry jarEntry = ets.nextElement();
-				String jarEntryPath = jarEntry.getName();
-				if (jarEntryPath.startsWith(imageDir) == false) {
-					continue;
-				}
-				InputStream input = file.getInputStream(jarEntry);
-				String imgFileName = jarEntryPath.substring(jarEntryPath.lastIndexOf('/') + 1, jarEntryPath.lastIndexOf('.'));
-				resName.add(imgFileName);
-				File dataFile = new File(dir, imgFileName);
-				if (dataFile.exists() == false || dataFile.isFile() == false) {
-					dataFile.createNewFile();
-				}
-				OutputStream os = new FileOutputStream(dataFile);
-				byte[] buffer = new byte[1024];
-				int len = -1;
-				while ((len = input.read(buffer)) != -1) {
-					os.write(buffer, 0, len);
-				}
-				input.close();
-				os.close();
-			}
-
-			channelNames = resName.toArray(new String[0]);
+			// channelNames = resName.toArray(new String[0]);
 
 			// BitmapFactory.decodeFile()
-			for (int i = 0; i < resName.size(); i++) {
-				String filePath = imageRoot + resName.get(i);
-				File f = new File(filePath);
-				int len = (int) f.length();
-				byte[] fileData = new byte[len];
-				InputStream input = new FileInputStream(f);
+
+			File[] files = dir.listFiles();
+
+			List<String> resNamesList = new ArrayList<String>();
+
+			for (File dataFile : files) {
+				InputStream input = new FileInputStream(dataFile);
+				byte[] fileData = new byte[(int) dataFile.length()];
 				input.read(fileData);
-
-				cache.put(filePath, fileData);
+				String fileName = dataFile.getName();
+				int last = fileName.lastIndexOf('.') > 0 ? fileName.lastIndexOf('.') : fileName.length();
+				String resName = fileName.substring(0, last);
+				resNamesList.add(resName);
+				cache.put(SC.resBase + B.CHANNEL_RES_DIR + resName, fileData);
+				input.close();
 			}
-
+			channelNames = resNamesList.toArray(new String[0]);
 			return channelNames;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -211,7 +188,7 @@ public class CommPackageProcessor {
 		}
 	}
 
-	class GetChannelListHandlerMockup implements IMessageHandler, IValidationHandler {
+	class GetChannelListHandlerMockup implements IMessageHandler {
 
 		public String getHandlerName() {
 			return B.getChannelListHandler;
@@ -221,7 +198,7 @@ public class CommPackageProcessor {
 			JSONObject ret = new JSONObject();
 			try {
 
-				String[] channelNames = loadChannelInfos("com/snda/mzang/tvtogether/res/福建东南台.png");
+				String[] channelNames = loadChannelInfos();
 
 				ret.put(B.result, B.success);
 				JSONArray channels = new JSONArray();
@@ -244,7 +221,7 @@ public class CommPackageProcessor {
 
 		public byte[] handle(JSONObject msg) {
 			String resourceName = JSONUtil.getString(msg, B.resPathOnServ);
-			return cache.get(SC.resBase + B.CHANNEL_RES_DIR + resourceName);
+			return cache.get(SC.resBase + resourceName);
 		}
 	}
 

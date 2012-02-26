@@ -32,7 +32,7 @@ public class RequestHandler extends SimpleChannelHandler {
 
 		byte[] ret = commPackageProcessor.process(msg);
 
-		ChannelBuffer buff = ChannelBuffers.buffer(ret.length + B.lenStr);
+		ChannelBuffer buff = ChannelBuffers.buffer(ret.length + B.MSG_INT_LEN);
 		buff.writeInt(ret.length);
 		buff.writeBytes(ret);
 
