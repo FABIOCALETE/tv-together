@@ -18,9 +18,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.snda.mzang.tvtogether.R;
+import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.model.UserInfo;
 import com.snda.mzang.tvtogether.utils.C;
-import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.MD5Helper;
 import com.snda.mzang.tvtogether.utils.UserSession;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;

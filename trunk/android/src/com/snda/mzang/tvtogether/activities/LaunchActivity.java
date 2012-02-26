@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.snda.mzang.tvtogether.R;
+import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.utils.C;
-import com.snda.mzang.tvtogether.utils.JSONUtil;
 import com.snda.mzang.tvtogether.utils.db.DBUtil;
 import com.snda.mzang.tvtogether.utils.res.ResUtil;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
