@@ -1,4 +1,4 @@
-package com.snda.mzang.tvtogether.server;
+package com.snda.mzang.tvtogether.server.appmain;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
