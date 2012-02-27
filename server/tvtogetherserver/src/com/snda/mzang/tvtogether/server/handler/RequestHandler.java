@@ -11,8 +11,8 @@ import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
 
 import com.snda.mzang.tvtogether.base.B;
-import com.snda.mzang.tvtogether.server.comm.CommPackage;
-import com.snda.mzang.tvtogether.server.comm.CommPackageProcessor;
+import com.snda.mzang.tvtogether.server.protocol.CommPackage;
+import com.snda.mzang.tvtogether.server.protocol.CommPackageProcessor;
 
 public class RequestHandler extends SimpleChannelHandler {
 

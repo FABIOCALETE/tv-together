@@ -1,4 +1,4 @@
-package com.snda.mzang.tvtogether.server.comm;
+package com.snda.mzang.tvtogether.server.protocol;
 
 import java.io.File;
 import java.io.FileInputStream;

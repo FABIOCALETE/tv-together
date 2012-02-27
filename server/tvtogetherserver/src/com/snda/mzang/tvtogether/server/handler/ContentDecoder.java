@@ -7,7 +7,7 @@ import org.jboss.netty.handler.codec.frame.FrameDecoder;
 import org.json.JSONObject;
 
 import com.snda.mzang.tvtogether.base.B;
-import com.snda.mzang.tvtogether.server.comm.CommPackage;
+import com.snda.mzang.tvtogether.server.protocol.CommPackage;
 
 public class ContentDecoder extends FrameDecoder {
 
