@@ -60,4 +60,16 @@ public class UserInfoDaoTest extends BaseDaoTest {
 		Assert.assertNotNull(dao.login(userInfo));
 	}
 
+	@Test
+	public void testSelect() {
+		UserInfoDao dao = new UserInfoDao();
+		Assert.assertNotNull(dao.selectUser(id));
+	}
+
+	@Test
+	public void testDelete() {
+		UserInfoDao dao = new UserInfoDao();
+		Assert.assertTrue(dao.deleteUser(id));
+	}
+
 }

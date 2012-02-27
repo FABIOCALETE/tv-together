@@ -65,5 +65,16 @@
 	SELECT id, username,user_password,icon,comments,favor,location_x,location_y,register_time,last_login,status from user_Info
 	where username=#{userName} and user_password=#{userPassword}
 	</select>
+	
+	<!-- 根据用户id选择用户信息 -->
+	<select id="selectUser" parameterType="string"  resultType="userInfo" >
+	SELECT id, username,user_password,icon,comments,favor,location_x,location_y,register_time,last_login,status from user_Info
+	where id=#{id}
+	</select>
+	
+	<!-- 根据id删除用户信息 -->
+	<delete id="deleteUser">
+	delete from user_info where id=#{id}
+	</delete>
 
 </mapper>
