@@ -1,0 +1,31 @@
+create database 'tvtogetherdb';
+
+create table user_info(
+id varchar(128) not null,
+user_id varchar(128) not null,
+password varchar(128) not null,
+icon varchar(128) not null default '',
+comments varchar (1024) not null default '',
+favor varchar(1024) not null default '',
+location_x double default 0,
+location_y double default 0,
+register_time datetime,
+last_login datetime
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
