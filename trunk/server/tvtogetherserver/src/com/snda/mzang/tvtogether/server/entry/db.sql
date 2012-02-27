@@ -11,7 +11,8 @@ location_x double default 0,
 location_y double default 0,
 register_time datetime,
 last_login datetime,
-status varchar(128) not null default 'enabled'
+status varchar(128) not null default 'enabled',
+PRIMARY KEY (`id`)
 );
 
 
