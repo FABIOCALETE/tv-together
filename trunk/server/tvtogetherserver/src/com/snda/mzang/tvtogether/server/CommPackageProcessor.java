@@ -15,19 +15,19 @@ import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.exception.InvalidatedServerDataException;
 import com.snda.mzang.tvtogether.exception.L;
-import com.snda.mzang.tvtogether.server.handler.processor.GetChannelListProcessor;
+import com.snda.mzang.tvtogether.server.handler.processor.GetChannelList;
 import com.snda.mzang.tvtogether.server.handler.processor.GetServerResource;
-import com.snda.mzang.tvtogether.server.handler.processor.LoginProcessor;
+import com.snda.mzang.tvtogether.server.handler.processor.Login;
 
 public class CommPackageProcessor {
 
 	private static Map<String, IMessageProcessor> processors = new HashMap<String, IMessageProcessor>();
 
 	public CommPackageProcessor() {
-		IMessageProcessor handler = new LoginProcessor();
+		IMessageProcessor handler = new Login();
 		processors.put(handler.getProcessorName().toLowerCase(), handler);
 
-		handler = new GetChannelListProcessor();
+		handler = new GetChannelList();
 		processors.put(handler.getProcessorName().toLowerCase(), handler);
 
 		handler = new GetServerResource();
