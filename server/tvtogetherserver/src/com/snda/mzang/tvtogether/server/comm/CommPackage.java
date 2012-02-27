@@ -1,4 +1,4 @@
-package com.snda.mzang.tvtogether.server;
+package com.snda.mzang.tvtogether.server.comm;
 
 import org.json.JSONObject;
 
