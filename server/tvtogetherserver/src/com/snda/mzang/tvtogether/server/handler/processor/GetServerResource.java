@@ -7,7 +7,7 @@ import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.server.CommPackageProcessor;
 import com.snda.mzang.tvtogether.server.IMessageProcessor;
 import com.snda.mzang.tvtogether.server.IValidationProcessor;
-import com.snda.mzang.tvtogether.server.SC;
+import com.snda.mzang.tvtogether.server.util.SC;
 
 public class GetServerResource implements IMessageProcessor, IValidationProcessor {
 

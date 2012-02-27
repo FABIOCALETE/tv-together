@@ -14,10 +14,11 @@ import org.apache.commons.lang.StringUtils;
 import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.exception.InvalidatedServerDataException;
-import com.snda.mzang.tvtogether.exception.L;
 import com.snda.mzang.tvtogether.server.handler.processor.GetChannelList;
 import com.snda.mzang.tvtogether.server.handler.processor.GetServerResource;
 import com.snda.mzang.tvtogether.server.handler.processor.Login;
+import com.snda.mzang.tvtogether.server.log.L;
+import com.snda.mzang.tvtogether.server.util.SC;
 
 public class CommPackageProcessor {
 
@@ -88,52 +89,6 @@ public class CommPackageProcessor {
 			if (dir.exists() == false || dir.isDirectory() == false) {
 				dir.mkdirs();
 			}
-
-			// URL url =
-			// GetChannelListHandlerMockup.class.getClassLoader().getResource(oneRes);
-			//
-			// String path = url.getPath();
-			//
-			// String jarFilePath = path.substring(path.indexOf('/'),
-			// path.indexOf('!'));
-			//
-			// List<String> resName = new ArrayList<String>();
-			//
-			// JarFile file = new JarFile(jarFilePath);
-			//
-			// Enumeration<JarEntry> ets = file.entries();
-			//
-			// String imageDir = oneRes.substring(0, oneRes.lastIndexOf('/') +
-			// 1);
-			//
-			// while (ets.hasMoreElements() == true) {
-			// JarEntry jarEntry = ets.nextElement();
-			// String jarEntryPath = jarEntry.getName();
-			// if (jarEntryPath.startsWith(imageDir) == false) {
-			// continue;
-			// }
-			// InputStream input = file.getInputStream(jarEntry);
-			// String imgFileName =
-			// jarEntryPath.substring(jarEntryPath.lastIndexOf('/') + 1,
-			// jarEntryPath.lastIndexOf('.'));
-			// resName.add(imgFileName);
-			// File dataFile = new File(dir, imgFileName);
-			// if (dataFile.exists() == false || dataFile.isFile() == false) {
-			// dataFile.createNewFile();
-			// }
-			// OutputStream os = new FileOutputStream(dataFile);
-			// byte[] buffer = new byte[1024];
-			// int len = -1;
-			// while ((len = input.read(buffer)) != -1) {
-			// os.write(buffer, 0, len);
-			// }
-			// input.close();
-			// os.close();
-			// }
-
-			// channelNames = resName.toArray(new String[0]);
-
-			// BitmapFactory.decodeFile()
 
 			File[] files = dir.listFiles();
 
