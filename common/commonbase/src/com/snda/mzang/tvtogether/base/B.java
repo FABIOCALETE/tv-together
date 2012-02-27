@@ -30,10 +30,10 @@ public interface B {
 	String resPathOnServ = "resPathOnServ";
 
 	/**
-	 * server hanlder的名字
+	 * server processor的名字
 	 */
-	String loginHandler = "loginHandler";
-	String getChannelListHandler = "getChannelListHandler";
+	String login = "login";
+	String getChannelList = "getChannelList";
 	String getServerResource = "getServerResource";
 
 	/**
