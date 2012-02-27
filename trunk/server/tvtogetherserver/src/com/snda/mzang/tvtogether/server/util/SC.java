@@ -1,4 +1,4 @@
-package com.snda.mzang.tvtogether.server;
+package com.snda.mzang.tvtogether.server.util;
 
 public interface SC {
 
