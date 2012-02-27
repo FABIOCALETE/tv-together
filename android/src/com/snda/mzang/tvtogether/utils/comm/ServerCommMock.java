@@ -121,7 +121,7 @@ public class ServerCommMock implements IServerComm {
 	class LoginHandlerMockup extends BaseJSONMessageHandler {
 
 		public String getHandlerName() {
-			return C.loginHandler;
+			return C.login;
 		}
 
 		public byte[] handle(JSONObject msg) {
@@ -214,7 +214,7 @@ public class ServerCommMock implements IServerComm {
 	class GetChannelListHandlerMockup extends BaseJSONMessageHandler {
 
 		public String getHandlerName() {
-			return C.getChannelListHandler;
+			return C.getChannelList;
 		}
 
 		public byte[] handle(JSONObject msg) {
