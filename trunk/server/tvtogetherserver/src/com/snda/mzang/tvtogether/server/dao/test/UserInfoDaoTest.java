@@ -1,6 +1,7 @@
 package com.snda.mzang.tvtogether.server.dao.test;
 
 import java.util.Date;
+import java.util.Properties;
 
 import junit.framework.Assert;
 
@@ -16,6 +17,13 @@ public class UserInfoDaoTest extends BaseDaoTest {
 
 	@Test
 	public void testInsert() {
+
+		Properties props = System.getProperties();
+
+		for (Object key : props.keySet().toArray()) {
+			System.out.println(key + ":" + props.getProperty((String) key));
+		}
+
 		UserInfoDao dao = new UserInfoDao();
 		UserInfo userInfo = new UserInfo();
 		userInfo.setId(id);
