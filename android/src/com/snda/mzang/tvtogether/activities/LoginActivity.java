@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.snda.mzang.tvtogether.R;
+import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.model.UserInfo;
 import com.snda.mzang.tvtogether.utils.C;
@@ -141,7 +142,7 @@ public class LoginActivity extends Activity {
 		UserSession.setUserName(userName);
 		UserSession.setPassword(password);
 		try {
-			login.put(C.handler, "loginHandler");
+			login.put(C.handler, B.login);
 			login.put(C.keepLogin, keepLogin);
 			login.put(C.username, userName);
 			login.put(C.password, password);
