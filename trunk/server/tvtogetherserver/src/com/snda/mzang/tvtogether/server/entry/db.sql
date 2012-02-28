@@ -1,4 +1,6 @@
-create database 'tvtogetherdb';
+create database `tvtogetherdb`;
+
+use `tvtogetherdb`
 
 create table user_info(
 id varchar(128) not null,
