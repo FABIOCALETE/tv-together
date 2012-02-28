@@ -94,10 +94,10 @@ public class LoginActivity extends Activity {
 		boolean keepLoginBoolean = JSONUtil.getBoolean(msg, C.keepLogin);
 		SQLiteDatabase db = this.openOrCreateDatabase(C.DB_NAME, MODE_PRIVATE, null);
 
+		db.execSQL("delete from " + C.TB_USER);
+
 		if (keepLoginBoolean == true) {
 			db.execSQL("insert into " + C.TB_USER + " values (?,?)", new String[] { JSONUtil.getString(msg, C.username), JSONUtil.getString(msg, C.password) });
-		} else {
-			db.execSQL("delete from " + C.TB_USER + " where " + C.col_username + "=?", new String[] { JSONUtil.getString(msg, C.username) });
 		}
 
 		db.close();
