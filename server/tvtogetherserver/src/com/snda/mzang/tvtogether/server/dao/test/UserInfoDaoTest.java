@@ -69,9 +69,15 @@ public class UserInfoDaoTest extends BaseDaoTest {
 	}
 
 	@Test
-	public void testSelect() {
+	public void testSelectById() {
 		UserInfoDao dao = new UserInfoDao();
-		Assert.assertNotNull(dao.selectUser(id));
+		Assert.assertNotNull(dao.selectUserById(id));
+	}
+
+	@Test
+	public void testSelectByName() {
+		UserInfoDao dao = new UserInfoDao();
+		Assert.assertNotNull(dao.selectUserByName("TestUse2 - 2"));
 	}
 
 	@Test

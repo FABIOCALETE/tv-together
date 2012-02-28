@@ -16,8 +16,12 @@ public class UserInfoDao extends BaseDao {
 		return (UserInfo) getSqlSession().selectOne("userInfo.login", userInfo);
 	}
 
-	public UserInfo selectUser(String id) {
-		return (UserInfo) getSqlSession().selectOne("userInfo.selectUser", id);
+	public UserInfo selectUserById(String id) {
+		return (UserInfo) getSqlSession().selectOne("userInfo.selectUserById", id);
+	}
+
+	public UserInfo selectUserByName(String userName) {
+		return (UserInfo) getSqlSession().selectOne("userInfo.selectUserByName", userName);
 	}
 
 	public boolean deleteUser(String id) {
