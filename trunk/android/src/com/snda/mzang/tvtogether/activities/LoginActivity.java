@@ -24,6 +24,7 @@ import com.snda.mzang.tvtogether.model.UserInfo;
 import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.MD5Helper;
 import com.snda.mzang.tvtogether.utils.UserSession;
+import com.snda.mzang.tvtogether.utils.ui.PopupTipsUtil;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
 public class LoginActivity extends Activity {
@@ -118,20 +119,28 @@ public class LoginActivity extends Activity {
 		protected JSONObject process(final JSONObject data) {
 
 			JSONObject ret = C.comm.sendMsg(data);
-			String content = JSONUtil.getString(ret, C.result);
-			Log.d(C.TAG, content);
-
+			String result = JSONUtil.getString(ret, B.result);
+			Log.d(C.TAG, result);
 			return ret;
 		}
 
 		@Override
 		protected void postProcess(JSONObject result) {
-			Intent intent = new Intent(getApplicationContext(), ChannelListActivity.class);
-			// Bundle bundle = new Bundle();
-			// bundle.putString("demoMsg", displayMsg);
-			// intent.putExtras(bundle);
-			startActivity(intent);
-			LoginActivity.this.finish();
+			String optResult = JSONUtil.getString(result, B.result);
+
+			if (optResult.equals(B.success) == true) {
+
+				UserSession.setUserId(JSONUtil.getString(result, B.userId));
+
+				Intent intent = new Intent(getApplicationContext(), ChannelListActivity.class);
+				// Bundle bundle = new Bundle();
+				// bundle.putString("demoMsg", displayMsg);
+				// intent.putExtras(bundle);
+				startActivity(intent);
+				LoginActivity.this.finish();
+			} else {
+				PopupTipsUtil.displayToast(LoginActivity.this, "登录失败！");
+			}
 		}
 
 	}
@@ -142,7 +151,7 @@ public class LoginActivity extends Activity {
 		UserSession.setUserName(userName);
 		UserSession.setPassword(password);
 		try {
-			login.put(C.handler, B.login);
+			login.put(C.processor, B.login);
 			login.put(C.keepLogin, keepLogin);
 			login.put(C.username, userName);
 			login.put(C.password, password);

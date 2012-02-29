@@ -38,17 +38,18 @@ public class ServerCommSocket implements IServerComm {
 		if (msg == null) {
 			throw new InvalidatedClientDataException("Message is null");
 		}
-		if (msg.has(C.handler) == false) {
+		if (msg.has(C.processor) == false) {
 			throw new InvalidatedClientDataException("Message has no handler");
 		}
 		try {
+			msg.put(C.userId, UserSession.getUserId());
 			msg.put(C.username, UserSession.getUserName());
 			msg.put(C.password, UserSession.getPassword());
 		} catch (JSONException e1) {
 			throw new InvalidatedClientDataException();
 		}
 
-		String handlerName = JSONUtil.getString(msg, B.handler);
+		String handlerName = JSONUtil.getString(msg, B.processor);
 		byte[] msgData = getClientPkg(msg);
 
 		return this.sendMsg(handlerName, msgData, converter);
@@ -116,7 +117,7 @@ public class ServerCommSocket implements IServerComm {
 	}
 
 	private static byte[] getClientPkg(JSONObject msg) {
-		StringBuilder handler = new StringBuilder(JSONUtil.getString(msg, C.handler));
+		StringBuilder handler = new StringBuilder(JSONUtil.getString(msg, C.processor));
 		while (handler.length() < B.MSG_HANDLER_NAME_LEN) {
 			handler.append(' ');
 		}

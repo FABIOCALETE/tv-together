@@ -3,17 +3,22 @@ package com.snda.mzang.tvtogether.base;
 public interface B {
 
 	/**
-	 * 通讯相关
+	 * 通讯协议相关key
 	 * 
 	 */
 	String result = "result";
-	String success = "success";
-	String fail = "fail";
-	String handler = "handler";
+	String processor = "processor";
+	String userId = "userId";
 	String username = "username";
 	String password = "password";
 	String keepLogin = "keepLogin";
 	String regNewUser = "regNewUser";
+
+	/**
+	 * 通讯常量
+	 */
+	String success = "success";
+	String fail = "fail";
 
 	// 消息长度，四个字节一个int
 	int MSG_INT_LEN = 4;

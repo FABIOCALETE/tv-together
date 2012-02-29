@@ -66,7 +66,7 @@ public class ChannelListActivity extends ListActivity {
 		protected String[] process(final String oneRes) {
 			try {
 				JSONObject reqChannelList = new JSONObject();
-				reqChannelList.put(C.handler, C.getChannelList);
+				reqChannelList.put(C.processor, C.getChannelList);
 
 				JSONObject ret = C.comm.sendMsg(reqChannelList);
 				return JSONUtil.getStringArray(ret, C.channels);

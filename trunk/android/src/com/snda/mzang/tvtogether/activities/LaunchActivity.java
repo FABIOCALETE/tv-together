@@ -67,7 +67,7 @@ public class LaunchActivity extends Activity {
 	private void initResourceFiles() {
 		try {
 			JSONObject reqChannelList = new JSONObject();
-			reqChannelList.put(C.handler, C.getChannelList);
+			reqChannelList.put(C.processor, C.getChannelList);
 
 			JSONObject ret = C.comm.sendMsg(reqChannelList);
 			String[] channelNames = JSONUtil.getStringArray(ret, C.channels);
