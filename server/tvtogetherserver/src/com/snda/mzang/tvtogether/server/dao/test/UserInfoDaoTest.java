@@ -24,7 +24,7 @@ public class UserInfoDaoTest extends BaseDaoTest {
 			System.out.println(key + ":" + props.getProperty((String) key));
 		}
 
-		UserInfoDao dao = new UserInfoDao();
+		UserInfoDao dao = UserInfoDao.getInstance();
 		UserInfo userInfo = new UserInfo();
 		userInfo.setId(id);
 		userInfo.setUserName("TestUser");
@@ -42,7 +42,7 @@ public class UserInfoDaoTest extends BaseDaoTest {
 
 	@Test
 	public void testUpdate() {
-		UserInfoDao dao = new UserInfoDao();
+		UserInfoDao dao = UserInfoDao.getInstance();
 		UserInfo userInfo = new UserInfo();
 		userInfo.setId(id);
 		userInfo.setUserName("TestUse2 - 2");
@@ -60,7 +60,7 @@ public class UserInfoDaoTest extends BaseDaoTest {
 
 	@Test
 	public void testLogin() {
-		UserInfoDao dao = new UserInfoDao();
+		UserInfoDao dao = UserInfoDao.getInstance();
 		UserInfo userInfo = new UserInfo();
 		userInfo.setId(id);
 		userInfo.setUserName("TestUse2 - 2");
@@ -70,19 +70,19 @@ public class UserInfoDaoTest extends BaseDaoTest {
 
 	@Test
 	public void testSelectById() {
-		UserInfoDao dao = new UserInfoDao();
+		UserInfoDao dao = UserInfoDao.getInstance();
 		Assert.assertNotNull(dao.selectUserById(id));
 	}
 
 	@Test
 	public void testSelectByName() {
-		UserInfoDao dao = new UserInfoDao();
+		UserInfoDao dao = UserInfoDao.getInstance();
 		Assert.assertNotNull(dao.selectUserByName("TestUse2 - 2"));
 	}
 
 	@Test
 	public void testDelete() {
-		UserInfoDao dao = new UserInfoDao();
+		UserInfoDao dao = UserInfoDao.getInstance();
 		Assert.assertTrue(dao.deleteUser(id));
 	}
 
