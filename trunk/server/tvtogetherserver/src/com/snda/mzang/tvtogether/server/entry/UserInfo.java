@@ -31,17 +31,17 @@ public class UserInfo {
 		}
 	}
 
-	private String id;
-	private String userName;
-	private String userPassword;
-	private String icon;
-	private String comments;
-	private String favor;
-	private Double locationX;
-	private Double locationY;
-	private Date registerTime;
-	private Date lastLogin;
-	private String status;
+	String id;
+	String userName;
+	String userPassword;
+	String icon;
+	String comments;
+	String favor;
+	Double locationX;
+	Double locationY;
+	Date registerTime;
+	Date lastLogin;
+	String status;
 
 	public String getStatus() {
 		return status;
