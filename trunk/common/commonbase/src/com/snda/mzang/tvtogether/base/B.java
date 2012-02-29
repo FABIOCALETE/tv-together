@@ -13,6 +13,12 @@ public interface B {
 	String password = "password";
 	String keepLogin = "keepLogin";
 	String regNewUser = "regNewUser";
+	String failMsg = "failMsg";
+	// 获取频道列表时，channel节点在json中的名字
+	String channels = "channels";
+
+	// 获得server resource的时，资源的路径名
+	String resPathOnServ = "resPathOnServ";
 
 	/**
 	 * 通讯常量
@@ -20,6 +26,15 @@ public interface B {
 	String success = "success";
 	String fail = "fail";
 
+	/**
+	 * 应用常量
+	 */
+
+	String defaultIcon = "defaut.png";
+
+	/**
+	 * 协议相关
+	 */
 	// 消息长度，四个字节一个int
 	int MSG_INT_LEN = 4;
 	// 客户端给服务器端发送的handler名字，27个字节长度的字符
@@ -27,12 +42,6 @@ public interface B {
 
 	// 对服务器来说，msg header就是这两个的和，对于客户端来说，就是MSG_INT_LEN
 	int MSG_CLIENT_HEADER_LEN = MSG_INT_LEN + MSG_HANDLER_NAME_LEN;
-
-	// 获取频道列表时，channel节点在json中的名字
-	String channels = "channels";
-
-	// 获得server resource的时，资源的路径名
-	String resPathOnServ = "resPathOnServ";
 
 	/**
 	 * server processor的名字
