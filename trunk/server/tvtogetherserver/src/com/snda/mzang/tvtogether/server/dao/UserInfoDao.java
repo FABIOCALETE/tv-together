@@ -4,6 +4,16 @@ import com.snda.mzang.tvtogether.server.entry.UserInfo;
 
 public class UserInfoDao extends BaseDao {
 
+	private static UserInfoDao INSTANCE = new UserInfoDao();
+
+	private UserInfoDao() {
+
+	}
+
+	public static UserInfoDao getInstance() {
+		return INSTANCE;
+	}
+
 	public boolean insertUser(UserInfo userInfo) {
 		return getSqlSession().insert("userInfo.insertUser", userInfo) == 1;
 	}
