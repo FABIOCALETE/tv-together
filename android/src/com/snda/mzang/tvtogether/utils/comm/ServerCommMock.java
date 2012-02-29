@@ -49,7 +49,7 @@ public class ServerCommMock implements IServerComm {
 		if (msg == null) {
 			throw new InvalidatedClientDataException("Message is null");
 		}
-		if (msg.has(C.handler) == false) {
+		if (msg.has(C.processor) == false) {
 			throw new InvalidatedClientDataException("Message has no handler");
 		}
 		try {
@@ -60,7 +60,7 @@ public class ServerCommMock implements IServerComm {
 		}
 		String handlerName = null;
 		try {
-			handlerName = (String) msg.get(C.handler);
+			handlerName = (String) msg.get(C.processor);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

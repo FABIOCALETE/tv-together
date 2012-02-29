@@ -22,7 +22,7 @@ public class ResUtil {
 		if (resFile.isFile() == false || useLocalCache == false) {
 			resFile.createNewFile();
 			JSONObject reqServerRes = new JSONObject();
-			reqServerRes.put(C.handler, C.getServerResource);
+			reqServerRes.put(C.processor, C.getServerResource);
 			reqServerRes.put(C.resPathOnServ, resFullPath);
 			byte[] content = C.comm.sendMsg(reqServerRes, null);
 			OutputStream out = new FileOutputStream(resFile);

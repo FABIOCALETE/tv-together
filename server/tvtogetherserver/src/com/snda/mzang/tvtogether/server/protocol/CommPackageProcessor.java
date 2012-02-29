@@ -48,17 +48,17 @@ public class CommPackageProcessor {
 
 		try {
 			String handlerName = commPkg.type;
-			IMessageProcessor handler = processors.get(handlerName);
-			if (handler == null) {
+			IMessageProcessor processor = processors.get(handlerName);
+			if (processor == null) {
 				throw new InvalidatedServerDataException("No handler found for name \"" + handlerName + "\"");
 			}
 
-			if (handler instanceof IValidationProcessor) {
+			if (processor instanceof IValidationProcessor) {
 				if (doLoginValidation(JSONUtil.getString(commPkg.data, B.username), JSONUtil.getString(commPkg.data, B.password)) == false) {
 					return "User validation failed".getBytes();
 				}
 			}
-			byte[] serverContent = handler.handle(commPkg.data);
+			byte[] serverContent = processor.handle(commPkg.data);
 			return serverContent;
 
 		} catch (Exception e) {
