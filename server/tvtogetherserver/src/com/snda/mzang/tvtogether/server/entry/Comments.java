@@ -2,10 +2,11 @@ package com.snda.mzang.tvtogether.server.entry;
 
 import java.util.Date;
 
-public class MarkHistory {
-	String userId;
+public class Comments {
+	String id;
 	String resId;
-	Integer mark;
-	Date updateTime;
+	String userId;
+	String content;
+	Date createTime;
 
 }
