@@ -6,6 +6,17 @@ import org.json.JSONObject;
 
 public class JSONUtil {
 
+	public static Object getObj(JSONObject data, String key) {
+		if (data == null) {
+			return null;
+		}
+		try {
+			return data.get(key);
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+
 	public static String getString(JSONObject data, String key) {
 		if (data == null) {
 			return null;
