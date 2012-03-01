@@ -1,6 +1,5 @@
 package com.snda.mzang.tvtogether.activities;
 
-import java.io.File;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -13,7 +12,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +25,7 @@ import android.widget.Toast;
 import com.snda.mzang.tvtogether.R;
 import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.utils.C;
+import com.snda.mzang.tvtogether.utils.res.ResUtil;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
 public class ChannelListActivity extends ListActivity {
@@ -54,7 +53,7 @@ public class ChannelListActivity extends ListActivity {
 		task.execute((String) null);
 	}
 
-	class LoadChannelListTask extends WaitingDialogAsyncTask<String, String[]> {
+	class LoadChannelListTask extends WaitingDialogAsyncTask<String, JSONObject[]> {
 
 		public LoadChannelListTask(Context context, String waitingMsg) {
 			super(context, waitingMsg);
@@ -63,35 +62,44 @@ public class ChannelListActivity extends ListActivity {
 		ProgressDialog waitingDialog;
 
 		@Override
-		protected String[] process(final String oneRes) {
+		protected JSONObject[] process(final String oneRes) {
 			try {
 				JSONObject reqChannelList = new JSONObject();
 				reqChannelList.put(C.processor, C.getChannelList);
 
 				JSONObject ret = C.comm.sendMsg(reqChannelList);
-				return JSONUtil.getStringArray(ret, C.channels);
+				return JSONUtil.getJSONObjArray(ret, C.channels);
 			} catch (Exception ex) {
 				return null;
 			}
 		}
 
 		@Override
-		protected void postProcess(String[] result) {
+		protected void postProcess(JSONObject[] result) {
 			if (result == null) {
 				return;
 			}
-			ChannelListActivity.this.setListAdapter(new ChannelItemAdapter(ChannelListActivity.this, result));
+
+			String[] channelNames = new String[result.length];
+
+			for (int i = 0; i < result.length; i++) {
+				channelNames[i] = JSONUtil.getString(result[i], "name");
+			}
+
+			ChannelListActivity.this.setListAdapter(new ChannelItemAdapter(ChannelListActivity.this, channelNames, result));
 		}
 	}
 
 	public class ChannelItemAdapter extends ArrayAdapter<String> {
 		private final Context context;
 		private String[] names;
+		JSONObject[] channels;
 
-		public ChannelItemAdapter(Context context, String[] names) {
+		public ChannelItemAdapter(Context context, String[] names, JSONObject[] channels) {
 			super(context, R.layout.channelfragment, names);
 			this.context = context;
 			this.names = names;
+			this.channels = channels;
 		}
 
 		@Override
@@ -102,16 +110,15 @@ public class ChannelListActivity extends ListActivity {
 			ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 			textView.setText(names[position]);
 
-			String iconFileStr = C.CHANNEL_RES_LOCAL_DIR + names[position];
-			Bitmap icon = bitmapCache.get(iconFileStr);
-			if (icon == null) {
-				File iconFile = new File(iconFileStr);
-				if (iconFile.isFile()) {
-					icon = BitmapFactory.decodeFile(iconFileStr);
-					bitmapCache.put(iconFileStr, icon);
-				}
+			String resPath = JSONUtil.getString(channels[position], "image");
+
+			try {
+				Bitmap icon = ResUtil.getResAs(resPath, C.bitmap);
+				imageView.setImageBitmap(icon);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			imageView.setImageBitmap(icon);
+
 			return rowView;
 		}
 	}
