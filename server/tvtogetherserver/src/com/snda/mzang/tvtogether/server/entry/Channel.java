@@ -5,6 +5,15 @@ public class Channel {
 	String id;
 	String name;
 	String comments;
+	String image;
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	public String getId() {
 		return id;
