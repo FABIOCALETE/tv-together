@@ -88,6 +88,7 @@ public class ServerCommSocket implements IServerComm {
 		} catch (JSONException e) {
 			throw new InvalidatedServerDataException(e);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new InvalidatedServerDataException(e);
 		} finally {
 

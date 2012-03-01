@@ -10,11 +10,10 @@ import com.snda.mzang.tvtogether.server.dao.UserInfoDao;
 import com.snda.mzang.tvtogether.server.entry.UserInfo;
 import com.snda.mzang.tvtogether.server.entry.UserInfo.UserStatus;
 import com.snda.mzang.tvtogether.server.protocol.IMessageProcessor;
-import com.snda.mzang.tvtogether.server.protocol.IValidationProcessor;
 import com.snda.mzang.tvtogether.server.util.EntryId;
 import com.snda.mzang.tvtogether.server.util.JSONConverter;
 
-public class Login implements IMessageProcessor, IValidationProcessor {
+public class Login implements IMessageProcessor {
 
 	UserInfoDao userInfoDao = UserInfoDao.getInstance();
 
