@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.snda.mzang.tvtogether.R;
+import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.res.ResUtil;
@@ -81,24 +82,35 @@ public class ChannelListActivity extends ListActivity {
 			}
 
 			String[] channelNames = new String[result.length];
+			Bitmap[] icons = new Bitmap[result.length];
 
 			for (int i = 0; i < result.length; i++) {
 				channelNames[i] = JSONUtil.getString(result[i], "name");
+				String resPath = B.CHANNEL_RES_DIR + JSONUtil.getString(result[i], "image");
+				try {
+					icons[i] = ResUtil.getResAs(resPath, C.bitmap);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 			}
 
-			ChannelListActivity.this.setListAdapter(new ChannelItemAdapter(ChannelListActivity.this, channelNames, result));
+			ChannelListActivity.this.setListAdapter(new ChannelItemAdapter(ChannelListActivity.this, channelNames, icons, result));
 		}
 	}
 
 	public class ChannelItemAdapter extends ArrayAdapter<String> {
 		private final Context context;
 		private String[] names;
-		JSONObject[] channels;
+		private Bitmap[] icons;
+		@SuppressWarnings("unused")
+		private JSONObject[] channels;
 
-		public ChannelItemAdapter(Context context, String[] names, JSONObject[] channels) {
+		public ChannelItemAdapter(Context context, String[] names, Bitmap[] icons, JSONObject[] channels) {
 			super(context, R.layout.channelfragment, names);
 			this.context = context;
 			this.names = names;
+			this.icons = icons;
 			this.channels = channels;
 		}
 
@@ -110,14 +122,7 @@ public class ChannelListActivity extends ListActivity {
 			ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 			textView.setText(names[position]);
 
-			String resPath = JSONUtil.getString(channels[position], "image");
-
-			try {
-				Bitmap icon = ResUtil.getResAs(resPath, C.bitmap);
-				imageView.setImageBitmap(icon);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			imageView.setImageBitmap(icons[position]);
 
 			return rowView;
 		}

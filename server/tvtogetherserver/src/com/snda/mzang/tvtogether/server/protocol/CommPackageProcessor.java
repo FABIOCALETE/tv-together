@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.base.JSONUtil;
@@ -17,6 +19,18 @@ import com.snda.mzang.tvtogether.server.log.L;
 public class CommPackageProcessor {
 
 	private static Map<String, IMessageProcessor> processors = new HashMap<String, IMessageProcessor>();
+
+	private static byte[] USER_VALIDATION_FAILED;
+
+	static {
+		JSONObject failJson = new JSONObject();
+		try {
+			failJson.put(B.result, B.fail);
+			failJson.put(B.failMsg, "用户验证失败");
+		} catch (JSONException e) {
+		}
+		USER_VALIDATION_FAILED = failJson.toString().getBytes();
+	}
 
 	public CommPackageProcessor() {
 		IMessageProcessor handler = new Login();
@@ -49,7 +63,7 @@ public class CommPackageProcessor {
 
 			if (processor instanceof IValidationProcessor) {
 				if (doLoginValidation(JSONUtil.getString(commPkg.data, B.username), JSONUtil.getString(commPkg.data, B.password)) == false) {
-					return "User validation failed".getBytes();
+					return USER_VALIDATION_FAILED;
 				}
 			}
 			byte[] serverContent = processor.handle(commPkg.data);

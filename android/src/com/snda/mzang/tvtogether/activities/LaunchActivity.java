@@ -70,12 +70,11 @@ public class LaunchActivity extends Activity {
 			reqChannelList.put(C.processor, C.getChannelList);
 
 			JSONObject ret = C.comm.sendMsg(reqChannelList);
-			String[] channelNames = JSONUtil.getStringArray(ret, C.channels);
+			JSONObject[] channelNames = JSONUtil.getJSONObjArray(ret, C.channels);
 
-			for (String channelName : channelNames) {
-
-				ResUtil.getResAs(C.CHANNEL_RES_DIR + channelName, null, false);
-
+			for (JSONObject channel : channelNames) {
+				String path = JSONUtil.getString(channel, "image");
+				ResUtil.getResAs(C.CHANNEL_RES_DIR + path, null, false);
 			}
 		} catch (Exception ex) {
 			return;
