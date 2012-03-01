@@ -10,10 +10,11 @@ import org.junit.Test;
 import com.snda.mzang.tvtogether.server.dao.UserInfoDao;
 import com.snda.mzang.tvtogether.server.entry.UserInfo;
 import com.snda.mzang.tvtogether.server.entry.UserInfo.UserStatus;
+import com.snda.mzang.tvtogether.server.util.EntryId;
 
 public class UserInfoDaoTest extends BaseDaoTest {
 
-	public static String id = "asdfalkerjhfdbjks56463215661elrwjfsldk";
+	public static String id = EntryId.USER.getUUID();
 
 	@Test
 	public void testInsert() {
