@@ -17,6 +17,7 @@ import com.snda.mzang.tvtogether.exception.InvalidatedServerDataException;
 import com.snda.mzang.tvtogether.server.handler.processor.GetChannelList;
 import com.snda.mzang.tvtogether.server.handler.processor.GetServerResource;
 import com.snda.mzang.tvtogether.server.handler.processor.Login;
+import com.snda.mzang.tvtogether.server.helper.UserHelper;
 import com.snda.mzang.tvtogether.server.log.L;
 import com.snda.mzang.tvtogether.server.util.SC;
 
@@ -69,8 +70,7 @@ public class CommPackageProcessor {
 	}
 
 	private static boolean doLoginValidation(String userName, String password) {
-		// FIXME: do validation
-		return true;
+		return UserHelper.checkLogin(userName, password);
 	}
 
 	public static Map<String, byte[]> cache = new HashMap<String, byte[]>();
