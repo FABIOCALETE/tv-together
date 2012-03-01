@@ -21,7 +21,9 @@ create table channel(
 id varchar(128) not null,
 name varchar(128) not null,
 comments varchar(1024) not null,
+status varchar(1024) not null,
 image varchar(1024) not null,
+update_time datetime,
 PRIMARY KEY (`id`)
 )
 
