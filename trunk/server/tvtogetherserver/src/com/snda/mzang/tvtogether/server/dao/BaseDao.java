@@ -199,8 +199,7 @@ public class BaseDao {
 		@Override
 		public int delete(String statement, Object parameter) {
 			try {
-
-				return worker.delete(statement);
+				return worker.delete(statement, parameter);
 			} finally {
 				finish();
 			}
