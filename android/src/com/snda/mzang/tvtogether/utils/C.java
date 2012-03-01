@@ -2,7 +2,10 @@ package com.snda.mzang.tvtogether.utils;
 
 import org.json.JSONObject;
 
+import android.graphics.Bitmap;
+
 import com.snda.mzang.tvtogether.base.B;
+import com.snda.mzang.tvtogether.utils.comm.BitmapConverter;
 import com.snda.mzang.tvtogether.utils.comm.IContentConverter;
 import com.snda.mzang.tvtogether.utils.comm.IServerComm;
 import com.snda.mzang.tvtogether.utils.comm.JSONConverter;
@@ -28,6 +31,8 @@ public interface C extends B {
 	IServerComm comm = new ServerCommSocket("10.0.2.2", 17171);
 
 	IContentConverter<JSONObject> jsonc = JSONConverter.JSON;
+
+	IContentConverter<Bitmap> bitmap = BitmapConverter.BITMAP;
 
 	/**
 	 * 文件相关

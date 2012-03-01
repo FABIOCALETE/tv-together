@@ -2,14 +2,15 @@
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<!--
- <property name="url" value="jdbc:mysql://10.241.32.214:3306/tvtogetherdb" /> 
- <property name="url" value="jdbc:mysql://127.0.0.1:3306/tvtogetherdb" 	/>
-  -->
+<!-- <property name="url" value="jdbc:mysql://10.241.32.214:3306/tvtogetherdb" 
+	/> <property name="url" value="jdbc:mysql://127.0.0.1:3306/tvtogetherdb" 
+	/> -->
 <configuration>
 	<typeAliases>
 		<typeAlias alias="userInfo"
 			type="com.snda.mzang.tvtogether.server.entry.UserInfo" />
+		<typeAlias alias="channel"
+			type="com.snda.mzang.tvtogether.server.entry.Channel" />
 	</typeAliases>
 
 	<environments default="development">
@@ -17,7 +18,8 @@
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
 				<property name="driver" value="com.mysql.jdbc.Driver" />
- 				<property name="url" value="jdbc:mysql://10.241.32.214:3306/tvtogetherdb" /> 
+				<property name="url"
+					value="jdbc:mysql://10.241.32.214:3306/tvtogetherdb" />
 				<property name="username" value="root" />
 				<property name="password" value="111111111" />
 			</dataSource>
@@ -25,5 +27,6 @@
 	</environments>
 	<mappers>
 		<mapper resource="mapper/userInfo.xml" />
+		<mapper resource="mapper/channel.xml" />
 	</mappers>
 </configuration>

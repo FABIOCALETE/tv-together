@@ -1,12 +1,6 @@
 package com.snda.mzang.tvtogether.server.protocol;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +13,6 @@ import com.snda.mzang.tvtogether.server.handler.processor.GetServerResource;
 import com.snda.mzang.tvtogether.server.handler.processor.Login;
 import com.snda.mzang.tvtogether.server.helper.UserHelper;
 import com.snda.mzang.tvtogether.server.log.L;
-import com.snda.mzang.tvtogether.server.util.SC;
 
 public class CommPackageProcessor {
 
@@ -72,45 +65,46 @@ public class CommPackageProcessor {
 	private static boolean doLoginValidation(String userName, String password) {
 		return UserHelper.checkLogin(userName, password);
 	}
-
-	public static Map<String, byte[]> cache = new HashMap<String, byte[]>();
-
-	public static String[] channelNames = null;
-
-	public static String[] loadChannelInfos() {
-		if (channelNames != null) {
-			return channelNames;
-		}
-		try {
-
-			String imageRoot = SC.resBase + B.CHANNEL_RES_DIR;
-
-			File dir = new File(imageRoot);
-			if (dir.exists() == false || dir.isDirectory() == false) {
-				dir.mkdirs();
-			}
-
-			File[] files = dir.listFiles();
-
-			List<String> resNamesList = new ArrayList<String>();
-
-			for (File dataFile : files) {
-				InputStream input = new FileInputStream(dataFile);
-				byte[] fileData = new byte[(int) dataFile.length()];
-				input.read(fileData);
-				String fileName = dataFile.getName();
-				int last = fileName.lastIndexOf('.') > 0 ? fileName.lastIndexOf('.') : fileName.length();
-				String resName = fileName.substring(0, last);
-				resNamesList.add(resName);
-				cache.put(SC.resBase + B.CHANNEL_RES_DIR + resName, fileData);
-				input.close();
-			}
-			channelNames = resNamesList.toArray(new String[0]);
-			return channelNames;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+	//
+	// public static Map<String, byte[]> cache = new HashMap<String, byte[]>();
+	//
+	// public static String[] channelNames = null;
+	//
+	// public static String[] loadChannelInfos() {
+	// if (channelNames != null) {
+	// return channelNames;
+	// }
+	// try {
+	//
+	// String imageRoot = SC.resBase + B.CHANNEL_RES_DIR;
+	//
+	// File dir = new File(imageRoot);
+	// if (dir.exists() == false || dir.isDirectory() == false) {
+	// dir.mkdirs();
+	// }
+	//
+	// File[] files = dir.listFiles();
+	//
+	// List<String> resNamesList = new ArrayList<String>();
+	//
+	// for (File dataFile : files) {
+	// InputStream input = new FileInputStream(dataFile);
+	// byte[] fileData = new byte[(int) dataFile.length()];
+	// input.read(fileData);
+	// String fileName = dataFile.getName();
+	// int last = fileName.lastIndexOf('.') > 0 ? fileName.lastIndexOf('.') :
+	// fileName.length();
+	// String resName = fileName.substring(0, last);
+	// resNamesList.add(resName);
+	// cache.put(SC.resBase + B.CHANNEL_RES_DIR + resName, fileData);
+	// input.close();
+	// }
+	// channelNames = resNamesList.toArray(new String[0]);
+	// return channelNames;
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// return null;
+	// }
+	// }
 
 }

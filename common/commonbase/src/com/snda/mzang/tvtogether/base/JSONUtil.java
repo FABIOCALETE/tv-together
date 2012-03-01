@@ -55,4 +55,20 @@ public class JSONUtil {
 		}
 	}
 
+	public static JSONObject[] getJSONObjArray(JSONObject data, String key) {
+		if (data == null) {
+			return null;
+		}
+		try {
+			JSONArray array = data.getJSONArray(key);
+			JSONObject[] ret = new JSONObject[array.length()];
+			for (int i = 0; i < ret.length; i++) {
+				ret[i] = array.getJSONObject(i);
+			}
+			return ret;
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+
 }

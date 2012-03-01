@@ -73,16 +73,12 @@ public class JSONConverter {
 		return json;
 	}
 
-	public static JSONObject convertListToJSON(List<Object> beans, String arrayName, JSONObject json, Map<String, String> fieldNameMap) throws Exception {
+	public static JSONObject convertListToJSON(List<? extends Object> beans, String arrayName, JSONObject json, Set<String> ignoredFields) throws Exception {
 		if (json == null) {
 			json = new JSONObject();
 		}
 
-		if (fieldNameMap == null) {
-			fieldNameMap = EMPTY_MAP;
-		}
-
-		Object oldValue = json.get(arrayName);
+		Object oldValue = JSONUtil.getObj(json, arrayName);
 		if (oldValue != null) {
 			L.warning("Value already exists for array key " + arrayName + ". Value is:" + oldValue);
 		}
@@ -90,7 +86,7 @@ public class JSONConverter {
 		JSONArray array = new JSONArray();
 
 		for (Object bean : beans) {
-			JSONObject element = convertBeanToJSON(bean, null, null);
+			JSONObject element = convertBeanToJSON(bean, null, ignoredFields);
 			array.put(element);
 		}
 		json.put(arrayName, array);
