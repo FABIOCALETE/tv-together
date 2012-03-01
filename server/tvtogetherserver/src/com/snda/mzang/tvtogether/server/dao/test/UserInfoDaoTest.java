@@ -84,7 +84,8 @@ public class UserInfoDaoTest extends BaseDaoTest {
 	@Test
 	public void testDelete() {
 		UserInfoDao dao = UserInfoDao.getInstance();
-		Assert.assertTrue(dao.deleteUser(id));
+		boolean ret = dao.deleteUser(id);
+		Assert.assertTrue(ret);
 	}
 
 }
