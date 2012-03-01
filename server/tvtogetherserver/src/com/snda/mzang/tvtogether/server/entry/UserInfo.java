@@ -1,8 +1,27 @@
 package com.snda.mzang.tvtogether.server.entry;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-public class UserInfo {
+import com.snda.mzang.tvtogether.base.B;
+
+public class UserInfo implements IFieldMapper {
+
+	public static Map<String, String> FIELD_MAP;
+
+	static {
+		Map<String, String> fieldMap = new HashMap<String, String>();
+		fieldMap.put("id", B.userId);
+
+		FIELD_MAP = Collections.unmodifiableMap(fieldMap);
+	}
+
+	@Override
+	public Map<String, String> getFieldMap() {
+		return FIELD_MAP;
+	}
 
 	public static enum UserStatus {
 		ENABLE("enable"), DISABLE("disable");
