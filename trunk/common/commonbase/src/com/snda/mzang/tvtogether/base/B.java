@@ -9,6 +9,7 @@ public interface B {
 	String result = "result";
 	String processor = "processor";
 	String userId = "userId";
+	String channelId = "channelId";
 	String username = "username";
 	String password = "password";
 	String keepLogin = "keepLogin";
