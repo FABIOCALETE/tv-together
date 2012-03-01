@@ -17,6 +17,13 @@ status varchar(128) not null default 'enabled',
 PRIMARY KEY (`id`)
 );
 
+create table channel(
+id varchar(128) not null,
+name varchar(128) not null,
+comments varchar(1024) not null,
+image varchar(1024) not null,
+PRIMARY KEY (`id`)
+)
 
 
 
