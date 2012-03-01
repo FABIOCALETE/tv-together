@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -119,16 +118,13 @@ public class LoginActivity extends Activity {
 		protected JSONObject process(final JSONObject data) {
 
 			JSONObject ret = C.comm.sendMsg(data);
-			String result = JSONUtil.getString(ret, B.result);
-			Log.d(C.TAG, result);
 			return ret;
 		}
 
 		@Override
 		protected void postProcess(JSONObject result) {
-			String optResult = JSONUtil.getString(result, B.result);
 
-			if (optResult.equals(B.success) == true) {
+			if (B.success.equals(JSONUtil.getString(result, B.result)) == true) {
 
 				UserSession.setUserId(JSONUtil.getString(result, B.userId));
 
@@ -139,7 +135,8 @@ public class LoginActivity extends Activity {
 				startActivity(intent);
 				LoginActivity.this.finish();
 			} else {
-				PopupTipsUtil.displayToast(LoginActivity.this, "登录失败！");
+				String failMsg = JSONUtil.getString(result, B.failMsg);
+				PopupTipsUtil.displayToast(LoginActivity.this, "登录失败：" + failMsg);
 			}
 		}
 
