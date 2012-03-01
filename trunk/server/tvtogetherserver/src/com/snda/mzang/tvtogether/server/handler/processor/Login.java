@@ -54,7 +54,7 @@ public class Login implements IMessageProcessor, IValidationProcessor {
 					userInfo.setId(userId);
 					boolean retInsert = userInfoDao.insertUser(userInfo);
 					if (retInsert == true) {
-						JSONConverter.convertBeanToJSON(loginUser, ret, null);
+						JSONConverter.convertBeanToJSON(userInfo, ret, null);
 						ret.put(B.result, B.success);
 					} else {
 						ret.put(B.result, B.fail);

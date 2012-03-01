@@ -2,6 +2,7 @@ package com.snda.mzang.tvtogether.server.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.snda.mzang.tvtogether.base.JSONUtil;
 import com.snda.mzang.tvtogether.server.entry.IFieldMapper;
 import com.snda.mzang.tvtogether.server.log.L;
 
@@ -40,13 +42,18 @@ public class JSONConverter {
 		Field[] fields = beanClz.getDeclaredFields();
 
 		for (Field field : fields) {
+
+			if (Modifier.isStatic(field.getModifiers()) == true) {
+				continue;
+			}
 			String fieldName = field.getName();
 
 			if (ignoredFields.contains(fieldName)) {
 				continue;
 			}
 
-			Method getMethod = beanClz.getDeclaredMethod("get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1));
+			String methodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+			Method getMethod = beanClz.getDeclaredMethod(methodName);
 			if (getMethod.isAccessible() == false) {
 				getMethod.setAccessible(true);
 			}
@@ -57,7 +64,7 @@ public class JSONConverter {
 			}
 			Object value = getMethod.invoke(bean);
 
-			Object oldValue = json.get(key);
+			Object oldValue = JSONUtil.getObj(json, key);
 			if (oldValue != null) {
 				L.warning("Value already exists for key " + key + ". Value is:" + oldValue);
 			}
