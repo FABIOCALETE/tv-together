@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.base.JSONUtil;
-import com.snda.mzang.tvtogether.exception.InvalidatedServerDataException;
+import com.snda.mzang.tvtogether.server.exception.InvalidatedServerDataException;
 import com.snda.mzang.tvtogether.server.handler.processor.GetChannelList;
 import com.snda.mzang.tvtogether.server.handler.processor.GetServerResource;
 import com.snda.mzang.tvtogether.server.handler.processor.Login;

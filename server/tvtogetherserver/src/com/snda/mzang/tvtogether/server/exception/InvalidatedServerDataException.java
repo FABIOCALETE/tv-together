@@ -1,4 +1,4 @@
-package com.snda.mzang.tvtogether.exception;
+package com.snda.mzang.tvtogether.server.exception;
 
 public class InvalidatedServerDataException extends Exception {
 
