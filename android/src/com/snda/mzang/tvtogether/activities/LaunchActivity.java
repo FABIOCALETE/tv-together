@@ -1,11 +1,14 @@
 package com.snda.mzang.tvtogether.activities;
 
+import java.io.File;
+
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.snda.mzang.tvtogether.R;
 import com.snda.mzang.tvtogether.base.JSONUtil;
@@ -66,6 +69,16 @@ public class LaunchActivity extends Activity {
 
 	private void initResourceFiles() {
 		try {
+			File appFolder = new File(C.sdroot + C.APP_DIR);
+			if (appFolder.exists() == false || appFolder.isDirectory() == false) {
+				appFolder.mkdir();
+			}
+
+			File channelFolder = new File(C.sdroot + C.CHANNEL_RES_DIR);
+			if (channelFolder.exists() == false || channelFolder.isDirectory() == false) {
+				channelFolder.mkdir();
+			}
+
 			JSONObject reqChannelList = new JSONObject();
 			reqChannelList.put(C.processor, C.getChannelList);
 
@@ -77,6 +90,7 @@ public class LaunchActivity extends Activity {
 				ResUtil.getResAs(C.CHANNEL_RES_DIR + path, null, false);
 			}
 		} catch (Exception ex) {
+			Log.e("TTT", "create file failed", ex);
 			return;
 		}
 
