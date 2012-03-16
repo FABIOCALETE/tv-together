@@ -1,7 +1,5 @@
 package com.snda.mzang.tvtogether.utils;
 
-import java.nio.charset.Charset;
-
 import org.apache.commons.lang.StringUtils;
 
 public class MD5Helper {
@@ -15,7 +13,7 @@ public class MD5Helper {
 
 		try {
 			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-			md.update(content.getBytes(Charset.forName("UTF-8")));
+			md.update(content.getBytes("UTF-8"));
 			// 结果为128位的整数，就是16×8个字节。
 			byte tmp[] = md.digest();
 			// 每个字节用两个字符表示
