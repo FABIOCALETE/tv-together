@@ -3,6 +3,7 @@ package com.snda.mzang.tvtogether.utils;
 import org.json.JSONObject;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 
 import com.snda.mzang.tvtogether.base.B;
 import com.snda.mzang.tvtogether.utils.comm.BitmapConverter;
@@ -37,7 +38,7 @@ public interface C extends B {
 	/**
 	 * 文件相关
 	 */
-	String sdroot = "/sdcard/";
+	String sdroot = Environment.getExternalStorageDirectory().toString() + "/";
 	String CHANNEL_RES_LOCAL_DIR = sdroot + CHANNEL_RES_DIR;
 
 }
