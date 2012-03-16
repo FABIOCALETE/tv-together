@@ -64,6 +64,8 @@ public interface B {
 	/**
 	 * 文件相关
 	 */
-	String CHANNEL_RES_DIR = "tvtogether/channelres/";
+	String APP_DIR = "tvtogether/";
+
+	String CHANNEL_RES_DIR = APP_DIR + "channelres/";
 
 }
