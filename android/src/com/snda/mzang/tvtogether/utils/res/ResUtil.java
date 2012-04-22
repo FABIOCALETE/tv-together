@@ -19,7 +19,7 @@ public class ResUtil {
 
 	public static <T> T getResAs(String resFullPath, IContentConverter<T> converter, boolean useLocalCache) throws Exception {
 		File resFile = new File(C.sdroot + resFullPath);
-		if (resFile.isFile() == false || useLocalCache == false) {
+		if (resFile.isFile() == false || useLocalCache == false || resFile.length() == 0) {
 			resFile.createNewFile();
 			JSONObject reqServerRes = new JSONObject();
 			reqServerRes.put(C.processor, C.getServerResource);
