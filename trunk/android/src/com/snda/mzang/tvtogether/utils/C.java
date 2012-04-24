@@ -36,6 +36,10 @@ public interface C extends B {
 	IContentConverter<Bitmap> bitmap = BitmapConverter.BITMAP;
 
 	/**
+	 * 程序内部
+	 */
+
+	/**
 	 * 文件相关
 	 */
 	String sdroot = Environment.getExternalStorageDirectory().toString() + "/";

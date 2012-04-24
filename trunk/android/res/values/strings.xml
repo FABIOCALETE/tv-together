@@ -19,6 +19,11 @@
     <string name="channel_exit_msg">确定退出17看电视吗？</string>
     <string name="channel_loading_msg">正在载入电视频道...</string>
 
+    <!-- 节目列表界面 -->
+    <string name="programme_programmeList_title">节目列表</string>
+    <string name="programme_loading_msg">正在载入频道节目...</string>
+    <string name="programme_comments">评论</string>
+
     <!-- 测试相关 -->
     <string name="test_demo">测试页面</string>
 

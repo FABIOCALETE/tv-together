@@ -5,13 +5,9 @@ import java.util.WeakHashMap;
 
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.snda.mzang.tvtogether.R;
 import com.snda.mzang.tvtogether.base.B;
@@ -29,7 +26,7 @@ import com.snda.mzang.tvtogether.utils.C;
 import com.snda.mzang.tvtogether.utils.res.ResUtil;
 import com.snda.mzang.tvtogether.utils.ui.WaitingDialogAsyncTask;
 
-public class ChannelListActivity extends ListActivity {
+public class ProgrammeListActivity extends ListActivity {
 
 	Map<String, Bitmap> bitmapCache = new WeakHashMap<String, Bitmap>();
 
@@ -42,22 +39,27 @@ public class ChannelListActivity extends ListActivity {
 		// list.addView(title, ltp);
 		// this.setContentView(list);
 		// buildChannelList();
-		this.setTitle(R.string.channel_channelList_title);
+		this.setTitle(R.string.programme_programmeList_title);
 
-		buildChannelList();
+		String channelName = this.getIntent().getExtras().getString(C.channleName);
+
+		buildProgrammeList(channelName);
 
 	}
 
-	public void buildChannelList() {
+	public void buildProgrammeList(String channelName) {
 
-		LoadChannelListTask task = new LoadChannelListTask(this, getText(R.string.channel_loading_msg).toString());
+		LoadProgrammeListTask task = new LoadProgrammeListTask(this, channelName, getText(R.string.programme_loading_msg).toString());
 		task.execute((String) null);
 	}
 
-	class LoadChannelListTask extends WaitingDialogAsyncTask<String, JSONObject[]> {
+	class LoadProgrammeListTask extends WaitingDialogAsyncTask<String, JSONObject[]> {
 
-		public LoadChannelListTask(Context context, String waitingMsg) {
+		String channelName;
+
+		public LoadProgrammeListTask(Context context, String channelName, String waitingMsg) {
 			super(context, waitingMsg);
+			this.channelName = channelName;
 		}
 
 		ProgressDialog waitingDialog;
@@ -65,10 +67,11 @@ public class ChannelListActivity extends ListActivity {
 		@Override
 		protected JSONObject[] process(final String oneRes) {
 			try {
-				JSONObject reqChannelList = new JSONObject();
-				reqChannelList.put(C.processor, C.getChannelList);
+				JSONObject reqProgrammeList = new JSONObject();
+				reqProgrammeList.put(C.processor, C.getProgrammeList);
+				reqProgrammeList.put(C.channleName, channelName);
 
-				JSONObject ret = C.comm.sendMsg(reqChannelList);
+				JSONObject ret = C.comm.sendMsg(reqProgrammeList);
 				return JSONUtil.getJSONObjArray(ret, C.channels);
 			} catch (Exception ex) {
 				return null;
@@ -95,18 +98,18 @@ public class ChannelListActivity extends ListActivity {
 
 			}
 
-			ChannelListActivity.this.setListAdapter(new ChannelItemAdapter(ChannelListActivity.this, channelNames, icons, result));
+			ProgrammeListActivity.this.setListAdapter(new ProgrammeAdapter(ProgrammeListActivity.this, channelNames, icons, result));
 		}
 	}
 
-	public class ChannelItemAdapter extends ArrayAdapter<String> {
+	public class ProgrammeAdapter extends ArrayAdapter<String> {
 		private final Context context;
 		private String[] names;
 		private Bitmap[] icons;
 		@SuppressWarnings("unused")
 		private JSONObject[] channels;
 
-		public ChannelItemAdapter(Context context, String[] names, Bitmap[] icons, JSONObject[] channels) {
+		public ProgrammeAdapter(Context context, String[] names, Bitmap[] icons, JSONObject[] channels) {
 			super(context, R.layout.channelfragment, names);
 			this.context = context;
 			this.names = names;
@@ -128,31 +131,29 @@ public class ChannelListActivity extends ListActivity {
 		}
 	}
 
-	@Override
-	public void onBackPressed() {
-
-		Dialog dialog = new AlertDialog.Builder(this).setIcon(R.drawable.ic_launcher).setTitle(R.string.channel_exit_title).setMessage(R.string.channel_exit_msg)
-				.setPositiveButton(R.string.channel_exit, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						ChannelListActivity.this.finish();
-					}
-				}).setNeutralButton(R.string.channel_not_exit, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-					}
-				}).create();
-		dialog.show();
-	}
+	// @Override
+	// public void onBackPressed() {
+	//
+	// Dialog dialog = new
+	// AlertDialog.Builder(this).setIcon(R.drawable.ic_launcher).setTitle(R.string.channel_exit_title).setMessage(R.string.channel_exit_msg)
+	// .setPositiveButton(R.string.channel_exit, new
+	// DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog, int whichButton) {
+	// ProgrammeListActivity.this.finish();
+	// }
+	// }).setNeutralButton(R.string.channel_not_exit, new
+	// DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog, int whichButton) {
+	// }
+	// }).create();
+	// dialog.show();
+	// }
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// string
 		Object item = getListAdapter().getItem(position);
-		Intent intent = new Intent(getApplicationContext(), ProgrammeListActivity.class);
-		Bundle bundle = new Bundle();
-		bundle.putString(C.channleName, item.toString());
-		intent.putExtras(bundle);
-		startActivity(intent);
-
+		Toast.makeText(this, item + " selected", Toast.LENGTH_SHORT).show();
 	}
 
 }
