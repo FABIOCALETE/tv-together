@@ -15,6 +15,7 @@ public interface B {
 	String keepLogin = "keepLogin";
 	String regNewUser = "regNewUser";
 	String failMsg = "failMsg";
+	String channleName = "channelName";
 	// 获取频道列表时，channel节点在json中的名字
 	String channels = "channels";
 
@@ -49,6 +50,7 @@ public interface B {
 	 */
 	String login = "login";
 	String getChannelList = "getChannelList";
+	String getProgrammeList = "getProgrammeList";
 	String getServerResource = "getServerResource";
 
 	/**
