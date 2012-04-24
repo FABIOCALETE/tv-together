@@ -49,6 +49,10 @@
             android:name=".activities.ChannelListActivity"
             android:label="@string/channel_channelList_title" >
         </activity>
+        <activity
+            android:name=".activities.ProgrammeListActivity"
+            android:label="@string/programme_programmeList_title" >
+</activity>
     </application>
 
 </manifest>
