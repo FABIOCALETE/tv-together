@@ -1,5 +1,6 @@
 package com.snda.mzang.tvtogether.activities;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -53,7 +54,7 @@ public class ProgrammeListActivity extends ListActivity {
 		task.execute((String) null);
 	}
 
-	class LoadProgrammeListTask extends WaitingDialogAsyncTask<String, JSONObject[]> {
+	class LoadProgrammeListTask extends WaitingDialogAsyncTask<String, Object[][]> {
 
 		String channelName;
 
@@ -65,40 +66,42 @@ public class ProgrammeListActivity extends ListActivity {
 		ProgressDialog waitingDialog;
 
 		@Override
-		protected JSONObject[] process(final String oneRes) {
+		protected Object[][] process(final String oneRes) {
 			try {
 				JSONObject reqProgrammeList = new JSONObject();
 				reqProgrammeList.put(C.processor, C.getProgrammeList);
 				reqProgrammeList.put(C.channleName, channelName);
 
 				JSONObject ret = C.comm.sendMsg(reqProgrammeList);
-				return JSONUtil.getJSONObjArray(ret, C.channels);
+				JSONObject[] result = JSONUtil.getJSONObjArray(ret, C.programmes);
+
+				Object[][] programmes = new Object[result.length][6];
+
+				for (int i = 0; i < result.length; i++) {
+					programmes[i][0] = JSONUtil.getString(result[i], "id");
+					programmes[i][1] = JSONUtil.getString(result[i], "name");
+					String image = JSONUtil.getString(result[i], "image");
+					programmes[i][2] = ResUtil.getResAs(B.PROGRAMME_RES_DIR + image, C.bitmap);
+					programmes[i][3] = JSONUtil.getString(result[i], "comments");
+					programmes[i][4] = new Date(JSONUtil.getString(result[i], "startTime"));
+					programmes[i][5] = new Date(JSONUtil.getString(result[i], "endTime"));
+
+				}
+
+				return programmes;
+
 			} catch (Exception ex) {
 				return null;
 			}
 		}
 
 		@Override
-		protected void postProcess(JSONObject[] result) {
+		protected void postProcess(Object[][] result) {
 			if (result == null) {
 				return;
 			}
 
-			String[] channelNames = new String[result.length];
-			Bitmap[] icons = new Bitmap[result.length];
-
-			for (int i = 0; i < result.length; i++) {
-				channelNames[i] = JSONUtil.getString(result[i], "name");
-				String resPath = B.CHANNEL_RES_DIR + JSONUtil.getString(result[i], "image");
-				try {
-					icons[i] = ResUtil.getResAs(resPath, C.bitmap);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-			}
-
-			ProgrammeListActivity.this.setListAdapter(new ProgrammeAdapter(ProgrammeListActivity.this, channelNames, icons, result));
+			ProgrammeListActivity.this.setListAdapter(new ProgrammeAdapter(ProgrammeListActivity.this, result, icons, result));
 		}
 	}
 
