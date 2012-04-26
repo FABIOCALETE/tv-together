@@ -5,10 +5,19 @@ import java.util.Date;
 public class Programme {
 	String id;
 	String name;
+	String image;
 	String comments;
 	String channelName;
 	Date startTime;
 	Date endTime;
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	public String getName() {
 		return name;

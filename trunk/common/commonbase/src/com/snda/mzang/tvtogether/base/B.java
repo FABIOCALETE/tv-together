@@ -18,6 +18,7 @@ public interface B {
 	String channleName = "channelName";
 	// 获取频道列表时，channel节点在json中的名字
 	String channels = "channels";
+	String programmes = "programmes";
 
 	// 获得server resource的时，资源的路径名
 	String resPathOnServ = "resPathOnServ";
@@ -69,5 +70,6 @@ public interface B {
 	String APP_DIR = "tvtogether/";
 
 	String CHANNEL_RES_DIR = APP_DIR + "channelres/";
+	String PROGRAMME_RES_DIR = APP_DIR + "programmes/";
 
 }
